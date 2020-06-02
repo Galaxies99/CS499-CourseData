@@ -1,0 +1,158 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{ctex}
+\usepackage{amsmath,amscd,amsbsy,amssymb,latexsym,url,bm,amsthm}
+\usepackage{epsfig,graphicx,subfigure}
+\usepackage{enumerate}
+\usepackage{wrapfig}
+\usepackage{mathrsfs,euscript}
+\usepackage[usenames]{xcolor}
+\usepackage{hyperref}
+\usepackage[vlined,ruled,linesnumbered]{algorithm2e}
+\hypersetup{colorlinks=true,linkcolor=black}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}
+\newtheorem*{observation}{Observation}
+\newtheorem*{solution}{Solution}
+\newtheorem*{conclusion}{Conclusion}
+\newtheorem{definition}{Definition}
+\theoremstyle{definition}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\postscript}[2]
+ {\setlength{\epsfxsize}{#2\hsize}
+  \centerline{\epsfbox{#1}}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+\makeatletter \renewenvironment{proof}[1][Proof] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+\makeatletter
+\renewenvironment{solution}[1][Solution] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+
+\begin{document}
+\noindent
+
+%========================================================================
+\noindent\framebox[\linewidth]{\shortstack[c]{
+\Large{\textbf{Homework 12}}\vspace{1mm}\\
+CS499-Mathematical Foundations of Computer Science, Jie Li, Spring 2020.}}
+\begin{center}
+\footnotesize{\color{blue}Name: ·½γό½ά (Hongjie Fang)  \quad Student ID: 518030910150 \quad Email: galaxies@sjtu.edu.cn}
+\end{center}
+
+\section{Chapter 5: Binomial Coefficients}
+\begin{enumerate}
+\item[3. ] Prove the hexagon property.
+  \begin{displaymath}
+  \binom{n-1}{k-1}\binom{n}{k+1}\binom{n+1}{k}=\binom{n-1}{k}\binom{n+1}{k+1}\binom{n}{k-1}
+  \end{displaymath}
+  \begin{proof} We can prove the property by simply unfolding the notations of binomial coefficients, as Equation \eqref{eq9} shown.
+  \begin{equation}\label{eq9}
+  \begin{aligned}
+  \binom{n-1}{k-1}\binom{n}{k+1}\binom{n+1}{k} &= \frac{(n-1)!}{(k-1)!(n-k)!} \cdot \frac{n!}{(k+1)!(n-k-1)!} \cdot \frac{(n+1)!}{k!(n-k+1)!} \\
+                                               &= \frac{(n-1)!}{k!(n-k-1)!} \cdot \frac{(n+1)!}{(k+1)!(n-k)!} \cdot \frac{n!}{(k-1)!(n-k+1)!} \\
+                                               &= \binom{n-1}{k}\binom{n+1}{k+1}\binom{n}{k-1}
+  \end{aligned}
+  \end{equation}
+  \end{proof}
+
+\item[13. ] Find relations between the superfactorial function $P_n = \prod_{k=1}^n k!$, the hyperfactorial function $Q_n = \prod_{k=1}^n k^k$, and the product $R_n = \prod_{k=0}^n \binom{n}{k}$.
+  \begin{solution}
+  Let us first simplify $R_n$ as follows.
+  \begin{displaymath}
+  R_n = \prod_{k=0}^n \binom{n}{k} = \prod_{k=0}^n \frac{n!}{k!(n-k)!} = \frac{(n!)^{n+1}}{\left(\prod_{k=0}^n k!\right)^2} = \frac{(n!)^{n+1}}{P_n^2}
+  \end{displaymath}
+
+  Actually this result can be simplified further as follows.
+  \begin{displaymath}
+  R_n = \frac{(n!)^{n+1}}{P_n^2} = \frac{\prod_{k=1}^n k^{n+1}}{\left(\prod_{k=1}^n k!\right) \cdot P_n} = \frac{\prod_{k=1}^n k^{n+1}}{\left(\prod_{k=1}^n k^{n-k+1}\right) \cdot P_n} = \frac{\prod_{k=1}^n k^k}{P_n} = \frac{Q_n}{P_n}
+  \end{displaymath}
+  Therefore, we derive an amazing relation among three functions, that is, $R_n = Q_n / P_n$. In our derivation process, another important relation between $P_n$ and $Q_n$ is that $P_nQ_n = (n!)^{n+1}$.
+  \end{solution}
+\end{enumerate}
+
+\section{Chapter 6: Special Numbers}
+\begin{enumerate}
+\item [11. ] What is $\sum_k(-1)^k{n \brack m}$, the row sum of Stirling's cycle-number triangle with alternating signs, when $n$ is a nonnegative integer?
+  \begin{solution}
+  According to the general formula (6.11) in textbook, we can make the following derivations (Eqn. \eqref{eq10}).
+  \begin{equation}\label{eq10}
+  \sum_k {n \brack m} (-1)^k = (-1)^{\overline{n}} = \left\{
+  \begin{aligned}
+  & 1 & \qquad & (n = 0)\\
+  & -1 & \qquad & (n = 1)\\
+  & 0 & \qquad  & (n > 1)
+  \end{aligned}\right. \quad \quad = [n=0] - [n=1]
+  \end{equation}
+  \end{solution}
+
+\item [12. ] Prove that Stirling numbers have an inversion law analogous to Formula (5.48) in textbook:
+  \begin{displaymath}
+  g(n) = \sum_k {n \brace k} (-1)^k f(k) \quad \Longleftrightarrow \quad f(n) = \sum_k {n \brack k} (-1)^k g(k)
+  \end{displaymath}
+  \begin{proof} We can split the conclusion to two sub-conclusions and prove them respectively.
+  \begin{itemize}
+  \item \textbf{($\Longrightarrow$)} If we have $g(n) = \sum_k {n \brace k} (-1)^k f(k)$, then $f(n) = \sum_k {n \brack k} (-1)^k g(k)$ is correct.
+  According to the similar form of the formula (6.31) in textbook, we can make the following derivations.
+  \begin{displaymath}
+  \begin{aligned}
+  f(n) &= \sum_k{ {n \brack k} (-1)^k g(k)} \\
+       &= \sum_k{{n \brack k} (-1)^k \left(\sum_m {{k \brace m} (-1)^m f(m)} \right)} \\
+       &= \sum_m{\sum_k {{n \brack k} {k \brace m} (-1)^{k+m} f(m)}} \\
+       &= \sum_m{(-1)^{n+m}f(m)\sum_k {{n \brack k} {k \brace m} (-1)^{n-k}}} \\
+       &= \sum_m{(-1)^{n+m}f(m)[m=n]} \\
+       &= f(n)
+  \end{aligned}
+  \end{displaymath}
+  Therefore, the conclusion's correctness is proved.
+  \item \textbf{($\Longleftarrow$)} If we have $f(n) = \sum_k {n \brack k} (-1)^k g(k)$, then $g(n) = \sum_k {n \brace k} (-1)^k f(k)$ is correct. The proof process is similar to the previous one and we can draw the similar conclusion that the conclusion is correct.
+  \end{itemize}
+  Therefore, the conclusion is correct.
+  \end{proof}
+
+\item [16. ] What is the general solution of the double recurrence
+  \begin{displaymath}
+  \begin{aligned}
+    & A_{n,0} = a_n [n \geq 0]; \qquad A_{0, k} = 0, \quad \textrm{if\ } k > 0;\\
+    & A_{n,k} = kA_{n-1,k} + A_{n-1,k-1}, \quad \textrm{integers\ } k,n;
+  \end{aligned}
+  \end{displaymath}
+  when $k$ and $n$ range over the set of all integers?
+  \begin{conclusion} Our conclusion about $A_{n,k}$ is as follows (Eqn.~\eqref{eq16}).
+  \begin{equation}
+  A_{n,k} = \sum_{j \geq 0}{{n-j \brace k}a_j}
+  \label{eq16}
+  \end{equation}
+  \end{conclusion}
+  \begin{proof} We will prove our conclusion by induction to $n$.
+  \begin{itemize}
+  \item \textbf{(Induction Basis)} When $n = 0$, our conclusion is $A_{0, k} = \sum_{j \geq 0} {{0 - j \brace k}a_j} = a_0 [k = 0]$, which satisfies the condition that $A_{0, k} = 0\ (k > 0)$ and $A_{0,0} = a_0$.
+  \item \textbf{(Induction Step)} Assume the conclusion holds for $n = m - 1$, and we will prove that the conclusion still holds for $n = m$. Thus we can have the following derivations.
+  \begin{displaymath}
+  \begin{aligned}
+  A_{m,k} &= k A_{m-1,k} + A_{m-1,k-1}\\
+          &= k \sum_{j \geq 0}{{m-1-j \brace k}a_j} + \sum_{j \geq 0}{{m-1-j \brace k-1}a_j} \\
+          &= \sum_{j \geq 0}{a_j \left(k{m-1-j \brace k} + {m-1-j \brace k-1}\right)} \\
+          &= \sum_{j \geq 0}{{m-j \brace k}a_j}
+  \end{aligned}
+  \end{displaymath}
+  The derivations above tell us the conclusion still holds for $n = m$.
+  \end{itemize}
+  Therefore, the conclusion holds for all integer $n$ and $k$.
+
+  We also want to emphasize that the summation is always finite for a given $n$, which can be easily verified by connecting $A_{n,k}$ with the Stirling's Numbers for subsets ${n \brace k}$.
+  \end{proof}
+\end{enumerate}
+%=================== =====================================================
+\end{document}

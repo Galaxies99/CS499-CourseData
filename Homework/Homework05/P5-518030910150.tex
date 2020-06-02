@@ -1,0 +1,257 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{ctex}
+\usepackage{amsmath,amscd,amsbsy,amssymb,latexsym,url,bm,amsthm}
+\usepackage{epsfig,graphicx,subfigure}
+\usepackage{enumerate}
+\usepackage{wrapfig}
+\usepackage{mathrsfs,euscript}
+\usepackage[usenames]{xcolor}
+\usepackage{hyperref}
+\usepackage[vlined,ruled,linesnumbered]{algorithm2e}
+\hypersetup{colorlinks=true,linkcolor=black}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}
+\newtheorem*{solution}{Solution}
+\newtheorem*{conclusion}{Conclusion}
+\newtheorem{definition}{Definition}
+\theoremstyle{definition}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\postscript}[2]
+ {\setlength{\epsfxsize}{#2\hsize}
+  \centerline{\epsfbox{#1}}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+\makeatletter \renewenvironment{proof}[1][Proof] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+\makeatletter
+\renewenvironment{solution}[1][Solution] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+
+\begin{document}
+\noindent
+
+%========================================================================
+\noindent\framebox[\linewidth]{\shortstack[c]{
+\Large{\textbf{Homework 05}}\vspace{1mm}\\
+CS499-Mathematical Foundations of Computer Science, Jie Li, Spring 2020.}}
+\begin{center}
+\footnotesize{\color{blue}Name: ·½γό½ά (Hongjie Fang)  \quad Student ID: 518030910150 \quad Email: galaxies@sjtu.edu.cn}
+\end{center}
+\begin{enumerate}[1.]
+  \item What is $11^4$? Why is this number easy to compute for a person who knows binomial coefficients?
+  \begin{solution}
+  Actually, $11^4 = 14641$, which is exactly the binomial coefficients arranged in order. This is because of the following equation (Equation \eqref{eq9}).
+  \begin{equation}
+  11^n = (10+1)^n = \sum_{k=0}^n \binom{n}{k} 10^k
+  \label{eq9}
+  \end{equation}
+  where, $\binom{n}{k}$ is the binomial coefficients. Therefore, we can compute $11^n$ easily by combining the binomial coefficients together in order.
+
+  What's more, we have $(11)_r^4 = (14641)_r$, where $r$ is the radix number satisfying $r \geq 7$, which is a more general conclusion.
+  \end{solution}
+
+  \item For which value(s) of $k$ is $\binom{n}{k}$ a maximum, when $n$ is a given positive integer? Prove your answer.
+  \begin{conclusion}
+  The maximum occurs when $k = \lfloor n/2 \rfloor$ and $k = \lceil n/2 \rceil$.
+  \end{conclusion}
+  \begin{proof} Considering two consecutive binomial coefficients $\binom{n}{k}$ and $\binom{n}{k+1}$, we have Equation \eqref{eq10}.
+  \begin{equation}
+  \frac{\binom{n}{k+1}}{\binom{n}{k}} = \frac{n-k}{k+1}
+  \label{eq10}
+  \end{equation}
+  Therefore,
+  \begin{itemize}
+  \item When $k < \lceil \frac{n}{2} \rceil$, we have $\frac{n-k}{k+1} \geq 1$, which means $\binom{n}{k+1} \geq \binom{n}{k}$.
+  \item When $k \geq \lfloor \frac{n}{2} \rfloor$, we have $\frac{n-k}{k+1} \leq 1$, which means $\binom{n}{k+1} \leq \binom{n}{k}$.
+  \end{itemize}
+  Thus,
+  \begin{itemize}
+  \item If $n$ is an odd number, then the maximum occurs when $k = \lfloor n/2 \rfloor$ and $k = \lceil n/2 \rceil$;
+  \item If $n$ is an even number, then the maximum occurs when $k = \lfloor n/2 \rfloor = \lceil n/2 \rceil = n/2$.
+  \end{itemize}
+  In conclusion, the maximum occurs when $k = \lfloor n/2 \rfloor$ and $k = \lceil n/2 \rceil$.
+  \end{proof}
+
+  \item Prove the hexagon property.
+  \begin{displaymath}
+  \binom{n-1}{k-1}\binom{n}{k+1}\binom{n+1}{k}=\binom{n-1}{k}\binom{n+1}{k+1}\binom{n}{k-1}
+  \end{displaymath}
+  \begin{proof} We can prove the property by simply unfold the notations of binomial coefficients, as Equation \eqref{eq11} shown.
+  \begin{equation}
+  \begin{aligned}
+  \binom{n-1}{k-1}\binom{n}{k+1}\binom{n+1}{k} &= \frac{(n-1)!}{(k-1)!(n-k)!} \cdot \frac{n!}{(k+1)!(n-k-1)!} \cdot \frac{(n+1)!}{k!(n-k+1)!} \\
+                                               &= \frac{(n-1)!}{k!(n-k-1)!} \cdot \frac{(n+1)!}{(k+1)!(n-k)!} \cdot \frac{n!}{(k-1)!(n-k+1)!} \\
+                                               &= \binom{n-1}{k}\binom{n+1}{k+1}\binom{n}{k-1}
+  \end{aligned}
+  \label{eq11}
+  \end{equation}
+  \end{proof}
+  \clearpage
+
+  \item Evaluate $\binom{-1}{k}$ by negating (actually un-negating) its upper index.
+  \begin{solution} With formula (5.14) in textbook, we can derive Equation \eqref{eq12}.
+  \begin{equation}
+  \binom{-1}{k} = (-1)^k \binom{k-(-1)-1}{k} = (-1)^k \binom{k}{k} = (-1)^k
+  \label{eq12}
+  \end{equation}
+  \end{solution}
+
+  \item Let $p$ be prime. Show that $\binom{p}{k}\mathrm{\ mod\ } p = 0$ for $0 < k < p$. What does this imply about the binomial coefficients $\binom{p-1}{k}$?
+  \begin{solution} We can derive that $p \mid \binom{p}{k}$ as follows.
+  \begin{displaymath}
+  \binom{p}{k} = \frac{p!}{(p-k)!k!} = p \cdot \frac{(p-1)!}{(p-k)!k!}  \quad \Longrightarrow \quad p \mid \binom{p}{k}
+  \end{displaymath}
+  The result indicates that $\binom{p}{k}\mathrm{\ mod\ } p = 0$ for $0 < k < p$.
+
+  Suppose $\binom{p-1}{k} \equiv f(k) \quad (\mathrm{mod\ } p)$. Because of the facts that $\binom{p}{k} = \binom{p-1}{k} + \binom{p-1}{k-1}$ and $\binom{p}{k}\mathrm{\ mod\ } p = 0$, we can derive the following equation (Equation \eqref{eq13}).
+  \begin{equation}
+  f(k) + f(k-1) \equiv 0 \quad (\mathrm{mod\ }p)
+  \label{eq13}
+  \end{equation}
+
+  Therefore, we have $f(k) \equiv f(k-2) \quad (\mathrm{mod\ }p)$ for $k \geq 2$.
+
+  Then we are going to determine the values of $f(0)$ and $f(1)$. With the facts that $\binom{p-1}{0} = 1$ and $\binom{p-1}{1} = p-1$, we can set $f(0) = 1$ and $f(1) = -1$ since $-1 \equiv p-1 \quad (\mathrm{mod\ }p)$. Therefore, we can derive the general formula $f(k) = (-1)^k$. The property of binomial coefficients $\binom{p-1}{k}$ is as follows (Equation \eqref{eq14}).
+
+  \begin{equation}
+  \binom{p-1}{k} \equiv (-1)^k \quad (\mathrm{mod\ }p)
+  \label{eq14}
+  \end{equation}
+  \end{solution}
+
+  \item Fix up the text's derivation in Problem 6, Section 5.2, by correctly applying symmetry.
+  \begin{solution}
+  We must add a restriction $k \geq 0$ when we use symmetry. Then we fix a part of the derivation as follows (Equation \eqref{eq15}).
+  \begin{equation}
+  \begin{aligned}
+  \frac{1}{n+1} \sum_k \binom{n+k}{k} \binom{n+1}{k+1} (-1)^k &= \frac{1}{n+1} \sum_{k\geq 0} \binom{n+k}{(n+k)-k} \binom{n+1}{k+1}(-1)^k\\
+                                                              &= \frac{1}{n+1} \sum_{k\geq 0} \binom{n+k}{n} \binom{n+1}{k+1}(-1)^k \\
+                                                              &= \frac{1}{n+1} \left(- \binom{n-1}{n} \binom{n+1}{0} (-1)^{-1} + \sum_{k} \binom{n+k}{n} \binom{n+1}{k+1}(-1)^k\right) \\
+                                                              &= [n=0] + \frac{1}{n+1}(-1)^n\binom{n-1}{-1}\\
+                                                              &= [n=0]
+  \end{aligned}
+  \label{eq15}
+  \end{equation}
+  Then the answer $[n=0]$ is the correct answer according to textbook.
+  \end{solution}
+
+  \item Is the following formula (Equation \eqref{eq16}) true also when $k < 0$?
+  \begin{equation}
+  r^{\underline{k}} \left(r - \frac{1}{2}\right)^{\underline{k}} = \frac{(2r)^{\underline{2k}}}{2^{2k}}
+  \label{eq16}
+  \end{equation}
+
+  \begin{solution}
+  In Chapter 2, we talk about the properties of falling power, including extending its exponent to all the integers. Therefore, we have the following formula (Equation \eqref{eq17}).
+  \begin{equation}
+  a^{\underline{-m}} = \frac{1}{(a+1)(a+2) \cdots (a+m)} = \prod_{i = 1}^m \frac{1}{a+i}
+  \label{eq17}
+  \end{equation}
+  Now let's find out what happens if we have $k < 0$ in Equation \eqref{eq16}. We assume that $k = -m$ and therefore $m$ is a positive integer, that is, $m \in \mathbb{Z}^+$. We can make the following derivations (Equation \eqref{eq18}).
+
+  \begin{equation}
+  \begin{aligned}
+  r^{\underline{k}} \left(r - \frac{1}{2}\right)^{\underline{k}} & = r^{\underline{-m}} \left(r - \frac{1}{2}\right)^{\underline{-m}} \\
+                                                                 & = \left(\prod_{i=1}^m \frac{1}{r+i} \right) \cdot \left(\prod_{i=1}^m \frac{1}{r - \frac{1}{2} + i} \right) \\
+                                                                 & = \prod_{i=1}^{2m} \frac{2}{2r + i} \\
+                                                                 & = 2^{2m} \cdot (2r)^{\underline{-2m}} \\
+                                                                 & = \frac{(2r)^{\underline{2k}}}{2^{2k}}
+  \end{aligned}
+  \label{eq18}
+  \end{equation}
+
+  Therefore, the formula still holds for $k < 0$.
+
+  What's more, with the similar methods, we know that the formula of ascending power also holds, that is,
+  \begin{displaymath}
+  r^{\overline{k}} \left(r - \frac{1}{2}\right)^{\overline{k}} = \frac{(2r)^{\overline{2k}}}{2^{2k}} \quad \quad (k \in \mathbb{Z})
+  \end{displaymath}
+  \end{solution}
+
+  \item Evaluate
+  \begin{displaymath}
+  \sum_k \binom{n}{k}(-1)^k \left(1-\frac{k}{n}\right)^n
+  \end{displaymath}
+  What is the approximate value of this sum, when $n$ is very large? {\color{purple}Hint: The sum is $\Delta^n f(0)$ for some function $f$.}
+  \begin{solution}
+  We define a function $f(\cdot)$ as follows (Equation \eqref{eq19}).
+  \begin{equation}
+  f(x) = \left(\frac{x}{n} - 1\right)^n
+  \label{eq19}
+  \end{equation}
+  Therefore, according to formula (5.40) in the textbook, we can make the following derivation.
+  \begin{displaymath}
+  \begin{aligned}
+  \Delta^n f(0) & = \sum_k \binom{n}{k} (-1)^{n-k} f(k) \\
+                & = \sum_k \binom{n}{k} (-1)^{n+k} \left(\frac{k}{n} - 1\right)^n \\
+                & = \sum_k \binom{n}{k} (-1)^k \left(1 - \frac{k}{n}\right)^n
+  \end{aligned}
+  \end{displaymath}
+
+  The derivation shows that $\Delta^n f(0)$ equals to the formula in the problem. Then we make the following derivations (Equation \eqref{eq21}).
+  \begin{equation}
+  \begin{aligned}
+  \Delta^n f(0) & = \left. \Delta^n f(x) \right|_{x=0} \\
+                & = \left. \Delta^n \left(\frac{x}{n} - 1\right)^n \right|_{x = 0} \\
+                & = \left. \Delta^n \left(\sum_k \binom{n}{k} (-1)^{n-k} \left(\frac{x}{n}\right)^k \right) \right|_{x=0} \\
+                & = \left. \Delta^n \left(\frac{x}{n}\right)^n \right|_{x=0} \\
+                & = \frac{n!}{n^n}
+  \end{aligned}
+  \label{eq21}
+  \end{equation}
+
+  Therefore, we know that $\Delta^n f(0) = \frac{n!}{n^n}$, which indicates that the original formula in the problem also equals to $\frac{n!}{n^n}$. When $n$ is very large, the Stirling Approximation tells us that:
+  \begin{displaymath}
+  n! \approx \sqrt{2\pi n} \left(\frac{n}{e}\right)^n
+  \end{displaymath}
+
+  Therefore, we know the following formula (Equation \eqref{eq22}).
+  \begin{equation}
+  \begin{aligned}
+  \sum_k \binom{n}{k}(-1)^k \left(1-\frac{k}{n}\right)^n &= \Delta^n f(0) \\
+  &= \frac{n!}{n^n} \\
+  &\approx \sqrt{2\pi n} \left(\frac{n}{e}\right)^n \cdot n^n \\
+  &= \sqrt{2\pi n} e^{-n}
+  \end{aligned}
+  \label{eq22}
+  \end{equation}
+  In summary, when $n$ is very large, the approximation value of the formula in the problem statement is $\sqrt{2\pi n}e^{-n}$.
+  \end{solution}
+
+  \item Show that the generalized exponentials of (5.58) in the textbook obey the law
+  \begin{displaymath}
+  \varepsilon_t(z) = \varepsilon(tz)^{\frac{1}{t}} \quad \quad (t \ne 0)
+  \end{displaymath}
+  where $\varepsilon(z)$ is an abbreviation for $\varepsilon_1(z)$.
+  \begin{solution}
+  Apply $r = t$ in formula (5.60) in the textbook, then we have the following equation.
+  \begin{equation}
+  \varepsilon_t(z)^t = \sum_{k\ge 0} t\frac{(tk+t)^{k-1}}{k!}z^k
+  \label{eq24}
+  \end{equation}
+  According to the definition of $\varepsilon_t(z)$ in formula (5.58) in the textbook and Equation \eqref{eq24}, we can make the following derivations (Equation \eqref{eq23}).
+  \begin{equation}
+  \begin{aligned}
+  \varepsilon(tz) &= \sum_{k \ge 0} (k+1)^{k-1} \frac{(tz)^k}{k!}\\
+                  &= \sum_{k \ge 0} (tk+t)^{k-1} \frac{tz^k}{k!} \\
+                  &= \varepsilon_t(z)^t
+  \end{aligned}
+  \label{eq23}
+  \end{equation}
+  Therefore, $\varepsilon_t(z) = \varepsilon(tz)^{\frac{1}{t}}$, which completes the proof.
+  \end{solution}
+\end{enumerate}
+%=================== =====================================================
+\end{document}

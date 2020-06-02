@@ -1,0 +1,295 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{ctex}
+\usepackage{amsmath,amscd,amsbsy,amssymb,latexsym,url,bm,amsthm}
+\usepackage{epsfig,graphicx,subfigure}
+\usepackage{enumerate}
+\usepackage{wrapfig}
+\usepackage{mathrsfs,euscript}
+\usepackage[usenames]{xcolor}
+\usepackage{hyperref}
+\usepackage[vlined,ruled,linesnumbered]{algorithm2e}
+\hypersetup{colorlinks=true,linkcolor=black}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}
+\newtheorem*{solution}{Solution}
+\newtheorem*{conclusion}{Conclusion}
+\newtheorem{definition}{Definition}
+\theoremstyle{definition}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\postscript}[2]
+ {\setlength{\epsfxsize}{#2\hsize}
+  \centerline{\epsfbox{#1}}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+\makeatletter \renewenvironment{proof}[1][Proof] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+\makeatletter
+\renewenvironment{solution}[1][Solution] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+
+\begin{document}
+\noindent
+
+%========================================================================
+\noindent\framebox[\linewidth]{\shortstack[c]{
+\Large{\textbf{Homework 04}}\vspace{1mm}\\
+CS499-Mathematical Foundations of Computer Science, Jie Li, Spring 2020.}}
+\begin{center}
+\footnotesize{\color{blue}Name: ·½γό½ά (Hongjie Fang)  \quad Student ID: 518030910150 \quad Email: galaxies@sjtu.edu.cn}
+\end{center}
+\section{Exercises of Chapter 4}
+\begin{enumerate}
+  \item[7. ] Ten people numbered $1$ to $10$ are lined up in a circle as in the Josephus problem, and every $m$-th person is executed (The value of $m$ may be much larger than $10$.) Prove that the first three people to go cannot be $10$, $k$ and $(k+1)$ (in this order), for any $k$.
+  \begin{proof} Suppose there exists a $k$ that the first three people to go are $10$, $k$ and $(k+1)$ (in this order). Then we can derive the following formulas based on the premises.
+  \begin{itemize}
+  \item The first people to go is $10$, then we have
+  \begin{equation}
+  m \equiv 0\quad (\mathrm{mod\ }10)
+  \label{eq1}
+  \end{equation}
+  \item The second people to go is $k$, then we have
+  \begin{equation}
+  m \equiv k - 0 = k\quad (\mathrm{mod\ }9)
+  \label{eq2}
+  \end{equation}
+  \item The third people to go is $(k+1)$, then we have
+  \begin{equation}
+  m \equiv (k + 1) - k = 1\quad (\mathrm{mod\ }8)
+  \label{eq3}
+  \end{equation}
+  \end{itemize}
+  Equation \eqref{eq1} suggests that $m$ is an even number, which contradicts with the conclusion derived by Equation \eqref{eq3} that $m$ is an odd number.
+
+  Therefore, the first three people to go cannot be $10$, $k$ and $(k+1)$ (in this order).
+  \end{proof}
+
+  \item[8. ] The residue number system ($x\mod 3$, $x\mod 5$) considered in the text has the curious property that $13$ corresponds to $(1,3)$, which looks almost the same. Explain how to find all instances of such a coincidence, without calculating all fifteen pairs of residues. In other words, find all solutions to the congruences
+      \begin{displaymath}
+      10u+v \equiv u \quad (\mathrm{mod\ } 3), \quad 10u+v \equiv v \quad (\mathrm{mod\ } 5).
+      \end{displaymath}
+      {\color{blue} Hint: Use the facts that $10u+6v \equiv u\quad (\mathrm{mod\ }3)$ and $10u+6v \equiv v\quad (\mathrm{mod\ }5)$.}
+  \begin{solution} We can make the following derivations according to the premises.
+  \begin{displaymath}
+  \begin{aligned}
+  10u+v \equiv u \quad (\mathrm{mod\ } 3)  \quad & \Longrightarrow \quad v \equiv 9u\quad (\mathrm{mod\ } 3) \\
+                                           \quad & \Longrightarrow \quad v \equiv 0\quad (\mathrm{mod\ } 3)
+  \end{aligned}
+  \end{displaymath}
+  We also have the restrictions that $0 \leq u < 3$ and $0 \leq v < 5$. Therefore, we have $u = 0,1,2$ and $v = 0,3$. Thus, all the possible solutions are $0,3,10,13,20,23$.
+  \end{solution}
+  \clearpage
+  \item[9. ] Show that $(3^{77}-1)/2$ is odd and composite. {\color{blue} Hint: What is $3^{77}$ mod $4$?}
+  \begin{proof} It's easy to derive the following conclusions by induction of $k$.
+  \begin{displaymath}
+  3^{2k} \equiv 1 \quad (\mathrm{mod\ } 4), \quad 3^{2k+1} \equiv 3 \quad (\mathrm{mod\ } 4).
+  \end{displaymath}
+  Let $k$ be $38$ then we can make the following derivations.
+  \begin{displaymath}
+  \begin{aligned}
+  3^{77} \equiv 3 \quad (\mathrm{mod\ }4) \quad & \Longrightarrow \quad 3^{77} - 1 \equiv 2 \quad (\mathrm{mod\ } 4) \\
+                                                & \Longrightarrow \quad 3^{77} - 1 = 4p + 2 \quad (p \in \mathbb{Z}) \\
+                                                & \Longrightarrow \quad \frac{3^{77} - 1}{2} = 2p + 1 \quad (p \in \mathbb{Z}) \\
+                                                & \Longrightarrow \quad \frac{3^{77} - 1}{2} \equiv 1 \quad (\mathrm{mod\ } 2)
+  \end{aligned}
+  \end{displaymath}
+  Therefore, $(3^{77}-1)/2$ is odd.
+
+  According to the summation formula of geometric sequence, we have the following equation (Equation \eqref{eq4}).
+  \begin{equation}
+  \frac{3^{77} - 1}{2} = 3^0 + 3^1 + \cdots + 3^{76} = \sum_{i = 0}^{76} 3^i
+  \label{eq4}
+  \end{equation}
+
+  Therefore, $(3^{77} - 1)/2$ is divisible by $\sum_{i = 0}^6 3^i$ (also known as $(3^7-1)/2$) because of the following equation (Equation \eqref{eq5}).
+  \begin{equation}
+  \frac{\sum_{i = 0}^{76} 3^i}{\sum_{i = 0}^6 3^i} = 3^0 + 3^7 + 3^{14} + \cdots + 3^{70} = \sum_{i=0}^{10} 3^{7i} \in \mathbb{Z}
+  \label{eq5}
+  \end{equation}
+  Therefore, $(3^{77}-1)/2$ is composite. In conclusion, $(3^{77}-1)/2$ is odd and composite.
+  \end{proof}
+
+  \item[10. ] Compute $\varphi(999)$.
+  \begin{solution} Since $999 = 3 \times 11 \times 37$, the result can be derived as follows (Equation \eqref{eq6}).
+  \begin{equation}
+  \varphi(999) = \varphi(3) \cdot \varphi(11) \cdot \varphi(37) = 2 \times 10 \times 36 = 720
+  \label{eq6}
+  \end{equation}
+  \end{solution}
+
+  \item[11. ] Find a function $\sigma(n)$ with the property that
+  \begin{displaymath}
+  g(n)=\sum_{0\leq k\leq n}f(k) \quad \Longleftrightarrow \quad f(n) = \sum_{0\leq k\leq n}\sigma(k)g(n-k)
+  \end{displaymath}
+  (This is analogous to the $M\ddot{o}bius$ $Function$; see (4.56) in textbook.)
+  \begin{solution}
+  It's obvious that $g(n) - g(n-1) = f(n)$ for any $n > 0$. Therefore, we set $\sigma(n)$ as follows (Equation \eqref{eq7}).
+  \begin{equation}
+  \sigma(n) = \left\{
+  \begin{aligned}
+  1 & \quad \quad (n = 0)\\
+  -1 & \quad \quad (n = 1)\\
+  0 & \quad \quad (otherwise)
+  \end{aligned}
+  \label{eq7}
+  \right.
+  \end{equation}
+  It's easy to verify that $\sigma(n)$ satisfies the conditions because of the property we stated above.
+  \end{solution}
+  \clearpage
+  \item[12. ] Simplify the formula $\sum_{d \mid m} \sum_{k \mid d} \mu(k) g(d/k)$.
+  \begin{solution} The result is $g(m)$ according to Equation \eqref{eq8}.
+  \begin{equation}
+  \begin{aligned}
+  \sum_{d \mid m} \sum_{k \mid d} \mu(k) g\left(\frac{d}{k}\right) &= \sum_{i \mid m} \sum_{j \mid (m/i)} \mu(j) g(i)\\
+                                                                   &= \sum_{i \mid m} g(i) \cdot \left(\sum_{j \mid (m/i)} \mu(j)\right) \\
+                                                                   &= \sum_{i \mid m} g(i) \cdot [m/i == 1] \\
+                                                                   &= g(m)
+  \end{aligned}
+  \label{eq8}
+  \end{equation}
+  \end{solution}
+
+  \item[13. ] A positive integer $n$ is called square-free if it is not divisible by $m^2$ for any $m > 1$. Find a necessary and sufficient condition that $n$ is square-free,
+  \begin{enumerate}
+  \item[\textbf{a}  ] in terms of the prime-exponent representation ((4.11) in textbook) of $n$;
+  \item[\textbf{b}  ] in terms of $\mu(n)$.
+  \end{enumerate}
+  \begin{solution} The conditions are as follows.
+  \begin{enumerate}
+  \item[\textbf{a}  ] $n_p \leq 1$ for all $p$.
+  \begin{proof}
+    We are going to prove that $n$ is square-free $\Longleftrightarrow$ $n_p \leq 1$ for all $p$.
+
+    ($\Longleftarrow$) If $n$ satisfies the condition that $n_p \leq 1$ for all $p$, then no prime divisors appears twice in $n$, that is, there exists no prime $p$ such that $p^2 \mid n$. Therefore, there exists no integer $m\ (m>1)$ such that $m^2 \mid n$, which indicates that $n$ is square-free.
+
+    ($\Longrightarrow$) If $n$ is square-free, then there exists no prime number $p$ such that $p^2 \mid n$. Therefore, we must have $n_p \leq 1$ for all $p$.
+  \end{proof}
+  \item[\textbf{b}  ] $\mu(n) \ne 0$.
+  \begin{proof}
+    We are going to prove that $n_p \leq 1$ for all $p$ $\Longleftrightarrow$ $\mu(n) \ne 0$ first.
+
+    Since $\mu(\cdot)$ is a multiplicative function, $\mu(n) = \prod_p \mu(p^{n_p})$.
+
+    ($\Longleftarrow$) If $\mu(n) \ne 0$, then we must have $\mu(p^{n_p}) \ne 0$ for all prime $p$, that is, $n_p \leq 1$ for all $p$.
+
+    ($\Longrightarrow$) If we have $n_p \leq 1$ for all $p$, then $\mu(p^{n_p}) \ne 0$. Therefore, $\mu(n) = \prod_p \mu(p^{n_p}) \ne 0$.
+
+    Combine the conclusion with the previous conclusion that $n$ is square-free $\Longleftrightarrow$ $n_p \leq 1$ for all $p$, we can derive that $n$ is square-free $\Longleftrightarrow$ $\mu(n) \ne 0$.
+  \end{proof}
+  \end{enumerate}
+  \end{solution}
+\end{enumerate}
+
+\section{Exercises of Chapter 5}
+\begin{enumerate}[1.]
+  \item What is $11^4$? Why is this number easy to compute for a person who knows binomial coefficients?
+  \begin{solution}
+  Actually, $11^4 = 14641$, which is exactly the binomial coefficients arranged in order. This is because of the following equation (Equation \eqref{eq9}).
+  \begin{equation}
+  11^n = (10+1)^n = \sum_{k=0}^n \binom{n}{k} 10^k
+  \label{eq9}
+  \end{equation}
+  where, $\binom{n}{k}$ is the binomial coefficients. Therefore, we can compute $11^n$ easily by combining the binomial coefficients together in order.
+
+  What's more, we have $(11)_r^4 = (14641)_r$, where $r$ is the radix number satisfying $r \geq 7$, which is a more general conclusion.
+  \end{solution}
+
+  \item For which value(s) of $k$ is $\binom{n}{k}$ a maximum, when $n$ is a given positive integer? Prove your answer.
+  \begin{conclusion}
+  The maximum occurs when $k = \lfloor n/2 \rfloor$ and $k = \lceil n/2 \rceil$.
+  \end{conclusion}
+  \begin{proof} Considering two consecutive binomial coefficients $\binom{n}{k}$ and $\binom{n}{k+1}$, we have Equation \eqref{eq10}.
+  \begin{equation}
+  \frac{\binom{n}{k+1}}{\binom{n}{k}} = \frac{n-k}{k+1}
+  \label{eq10}
+  \end{equation}
+  Therefore,
+  \begin{itemize}
+  \item When $k < \lceil \frac{n}{2} \rceil$, we have $\frac{n-k}{k+1} \geq 1$, which means $\binom{n}{k+1} \geq \binom{n}{k}$.
+  \item When $k \geq \lfloor \frac{n}{2} \rfloor$, we have $\frac{n-k}{k+1} \leq 1$, which means $\binom{n}{k+1} \leq \binom{n}{k}$.
+  \end{itemize}
+  Thus,
+  \begin{itemize}
+  \item If $n$ is an odd number, then the maximum occurs when $k = \lfloor n/2 \rfloor$ and $k = \lceil n/2 \rceil$;
+  \item If $n$ is an even number, then the maximum occurs when $k = \lfloor n/2 \rfloor = \lceil n/2 \rceil = n/2$.
+  \end{itemize}
+  In conclusion, the maximum occurs when $k = \lfloor n/2 \rfloor$ and $k = \lceil n/2 \rceil$.
+  \end{proof}
+
+  \item Prove the hexagon property.
+  \begin{displaymath}
+  \binom{n-1}{k-1}\binom{n}{k+1}\binom{n+1}{k}=\binom{n-1}{k}\binom{n+1}{k+1}\binom{n}{k-1}
+  \end{displaymath}
+  \begin{proof} We can prove the property by simply unfold the notations of binomial coefficients, as Equation \eqref{eq11} shown.
+  \begin{equation}
+  \begin{aligned}
+  \binom{n-1}{k-1}\binom{n}{k+1}\binom{n+1}{k} &= \frac{(n-1)!}{(k-1)!(n-k)!} \cdot \frac{n!}{(k+1)!(n-k-1)!} \cdot \frac{(n+1)!}{k!(n-k+1)!} \\
+                                               &= \frac{(n-1)!}{k!(n-k-1)!} \cdot \frac{(n+1)!}{(k+1)!(n-k)!} \cdot \frac{n!}{(k-1)!(n-k+1)!} \\
+                                               &= \binom{n-1}{k}\binom{n+1}{k+1}\binom{n}{k-1}
+  \end{aligned}
+  \label{eq11}
+  \end{equation}
+  \end{proof}
+  \clearpage
+
+  \item Evaluate $\binom{-1}{k}$ by negating (actually un-negating) its upper index.
+  \begin{solution} With formula (5.14) in textbook, we can derive Equation \eqref{eq12}.
+  \begin{equation}
+  \binom{-1}{k} = (-1)^k \binom{k-(-1)-1}{k} = (-1)^k \binom{k}{k} = (-1)^k
+  \label{eq12}
+  \end{equation}
+  \end{solution}
+
+  \item Let $p$ be prime. Show that $\binom{p}{k}\mathrm{\ mod\ } p = 0$ for $0 < k < p$. What does this imply about the binomial coefficients $\binom{p-1}{k}$?
+  \begin{solution} We can derive that $p \mid \binom{p}{k}$ as follows.
+  \begin{displaymath}
+  \binom{p}{k} = \frac{p!}{(p-k)!k!} = p \cdot \frac{(p-1)!}{(p-k)!k!}  \quad \Longrightarrow \quad p \mid \binom{p}{k}
+  \end{displaymath}
+  The result indicates that $\binom{p}{k}\mathrm{\ mod\ } p = 0$ for $0 < k < p$.
+
+  Suppose $\binom{p-1}{k} \equiv f(k) \quad (\mathrm{mod\ } p)$. Because of the facts that $\binom{p}{k} = \binom{p-1}{k} + \binom{p-1}{k-1}$ and $\binom{p}{k}\mathrm{\ mod\ } p = 0$, we can derive the following equation (Equation \eqref{eq13}).
+  \begin{equation}
+  f(k) + f(k-1) \equiv 0 \quad (\mathrm{mod\ }p)
+  \label{eq13}
+  \end{equation}
+
+  Therefore, we have $f(k) \equiv f(k-2) \quad (\mathrm{mod\ }p)$ for $k \geq 2$.
+
+  Then we are going to determine the values of $f(0)$ and $f(1)$. With the facts that $\binom{p-1}{0} = 1$ and $\binom{p-1}{1} = p-1$, we can set $f(0) = 1$ and $f(1) = -1$ since $-1 \equiv p-1 \quad (\mathrm{mod\ }p)$. Therefore, we can derive the general formula $f(k) = (-1)^k$. The property of binomial coefficients $\binom{p-1}{k}$ is as follows (Equation \eqref{eq14}).
+
+  \begin{equation}
+  \binom{p-1}{k} \equiv (-1)^k \quad (\mathrm{mod\ }p)
+  \label{eq14}
+  \end{equation}
+  \end{solution}
+
+  \item Fix up the text's derivation in Problem 6, Section 5.2, by correctly applying symmetry.
+  \begin{solution}
+  We must add a restriction $k \geq 0$ when we use symmetry. Then we fix a part of the derivation as follows (Equation \eqref{eq15}).
+  \begin{equation}
+  \begin{aligned}
+  \frac{1}{n+1} \sum_k \binom{n+k}{k} \binom{n+1}{k+1} (-1)^k &= \frac{1}{n+1} \sum_{k\geq 0} \binom{n+k}{(n+k)-k} \binom{n+1}{k+1}(-1)^k\\
+                                                              &= \frac{1}{n+1} \sum_{k\geq 0} \binom{n+k}{n} \binom{n+1}{k+1}(-1)^k \\
+                                                              &= \frac{1}{n+1} \left(- \binom{n-1}{n} \binom{n+1}{0} (-1)^{-1} + \sum_{k} \binom{n+k}{n} \binom{n+1}{k+1}(-1)^k\right) \\
+                                                              &= [n=0] + \frac{1}{n+1}(-1)^n\binom{n-1}{-1}\\
+                                                              &= [n=0]
+  \end{aligned}
+  \label{eq15}
+  \end{equation}
+  Then the answer $[n=0]$ is the correct answer according to textbook.
+  \end{solution}
+\end{enumerate}
+%=================== =====================================================
+\end{document}

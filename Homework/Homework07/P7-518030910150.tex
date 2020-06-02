@@ -1,0 +1,238 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{ctex}
+\usepackage{amsmath,amscd,amsbsy,amssymb,latexsym,url,bm,amsthm}
+\usepackage{epsfig,graphicx,subfigure}
+\usepackage{enumerate}
+\usepackage{wrapfig}
+\usepackage{mathrsfs,euscript}
+\usepackage[usenames]{xcolor}
+\usepackage{hyperref}
+\usepackage[vlined,ruled,linesnumbered]{algorithm2e}
+\hypersetup{colorlinks=true,linkcolor=black}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}
+\newtheorem*{solution}{Solution}
+\newtheorem*{conclusion}{Conclusion}
+\newtheorem{definition}{Definition}
+\theoremstyle{definition}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\postscript}[2]
+ {\setlength{\epsfxsize}{#2\hsize}
+  \centerline{\epsfbox{#1}}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+\makeatletter \renewenvironment{proof}[1][Proof] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+\makeatletter
+\renewenvironment{solution}[1][Solution] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+
+\begin{document}
+\noindent
+
+%========================================================================
+\noindent\framebox[\linewidth]{\shortstack[c]{
+\Large{\textbf{Homework 07}}\vspace{1mm}\\
+CS499-Mathematical Foundations of Computer Science, Jie Li, Spring 2020.}}
+\begin{center}
+\footnotesize{\color{blue}Name: ·½γό½ά (Hongjie Fang)  \quad Student ID: 518030910150 \quad Email: galaxies@sjtu.edu.cn}
+\end{center}
+\section{Warmup Problems}
+\begin{enumerate}
+  \item [4. ] Express $\frac{1}{1} + \frac{1}{3} + \cdots + \frac{1}{2n+1}$ in terms of harmonic numbers.
+  \begin{solution}
+  The following derivations (Eqn.~\eqref{eq1}) can come to the final conclusion $H_{2n+1} - \frac{1}{2} H_n$.
+  \begin{equation}
+  \begin{aligned}
+  \frac{1}{1} + \frac{1}{3} + \cdots + \frac{1}{2n+1} &= \left(\frac{1}{1} + \frac{1}{2} + \cdots + \frac{1}{2n+1}\right) - \left(\frac{1}{2} + \frac{1}{4} + \cdots + \frac{1}{2n}\right) \\
+                                                      &= \sum_{k=1}^{2n+1}{\frac{1}{k}} - \sum_{k=1}^n{\frac{1}{2k}} \\
+                                                      &= H_{2n+1} - \frac{1}{2} H_n
+  \end{aligned}
+  \label{eq1}
+  \end{equation}
+  \end{solution}
+
+  \item [5. ] Explain how to get the recurrence (Formula (6.75) in textbook) from the definition of $U_n(x,y)$ in Formula (6.74) in textbook, and solve the recurrence.
+  \begin{solution}
+  The derivations of the recurrence are as follows.
+  \begin{displaymath}
+  \begin{aligned}
+    U_n(x,y) &= \sum_{k \ge 1} \binom{n}{k} \frac{(-1)^{k-1}}{k} (x+ky)^n \\
+             &= \sum_{k \ge 1} \binom{n}{k} \frac{(-1)^{k-1}}{k} (x + ky)^{n-1} (x+ky) \\
+             &= x\sum_{k \ge 1}{\binom{n}{k} \frac{(-1)^{k-1}}{k} (x+ky)^{n-1}} + y\sum_{k \ge 1}{\binom{n}{k} (-1)^{k-1} (x+ky)^{n-1}} \\
+             &= x\sum_{k \ge 1}{\left( \binom{n-1}{k} + \binom{n-1}{k-1} \right) \frac{(-1)^{k-1}}{k} (x+ky)^{n-1}} + y\sum_{k \ge 1}{\binom{n}{k} (-1)^{k-1} (x+ky)^{n-1}} \\
+             &= xU_{n-1}(x,y) + \frac{x}{n}\sum_{k \ge 1}{\binom{n}{k}(-1)^{k-1} (x+ky)^{n-1}} + y\sum_{k \ge 1}{\binom{n}{k} (-1)^{k-1} (x+ky)^{n-1}} \\
+  \end{aligned}
+  \end{displaymath}
+  If we let $S_n(x,y)$ be $\sum_{k \ge 1}{\binom{n}{k} (-1)^{k-1} (x+ky)^{n-1}}$, then according to the derivations above, we have the following formula (Eqn.~\eqref{eq4})
+  \begin{equation}
+  U_n(x,y) = xU_{n-1}(x,y) + \frac{x}{n} S_n(x,y) + y S_n(x,y)
+  \label{eq4}
+  \end{equation}
+  Now let us evaluate the value of $S_n$.
+  \begin{displaymath}
+  \begin{aligned}
+  S_n(x,y) &= x^{n-1} + \sum_k {\binom{n}{k} (-1)^{k-1} (x+ky)^{n-1}} \\
+           &= x^{n-1} + \sum_k {\binom{n}{k} (-1)^{k-1} \left(\sum_i {\binom{n-1}{i} k^i x^{n-1-i}y^i}\right)} \\
+           &= x^{n-1} + \sum_i {\binom{n-1}{i} x^{n-1-i}y^i \left(\sum_k {\binom{n}{k} (-1)^{k-1} k^i}\right)}
+  \end{aligned}
+  \end{displaymath}
+  To continue the derivation, we must use an important formula (5.40) in textbook, which is displayed as follows.
+  \begin{displaymath}
+  \Delta^n f(x) = \sum_k \binom{n}{k} (-1)^{n-k} f(x+k)
+  \end{displaymath}
+  Here we denote $f_i(x)$ be $x^i$, then according to the previous formula, we know that
+  \begin{displaymath}
+  \Delta^n f_i(0) = \sum_k \binom{n}{k} (-1)^{n-k} k^i = - \sum_k \binom{n}{k} (-1)^{k-1} k^i
+  \end{displaymath}
+  It's easy to notice that for all $0 \leq i < n$, we have $\Delta^n f_i(x) = 0$. Thus, we can continue our derivations of $S_n(x,y)$.
+  \begin{displaymath}
+  \begin{aligned}
+  S_n(x,y) &= x^{n-1} + \sum_i {\binom{n-1}{i} x^{n-1-i}y^i \left(\sum_k {\binom{n}{k} (-1)^{k-1} k^i}\right)} \\
+           &= x^{n-1} - \sum_i {\binom{n-1}{i} x^{n-1-i}y^i \Delta^n f_i(0)} \\
+           &= x^{n-1} - \sum_{i=0}^{n-1} {\binom{n-1}{i} x^{n-1-i}y^i \Delta^n f_i(0)} \\
+           &= x^{n-1} - \sum_{i=0}^{n-1} {\binom{n-1}{i} x^{n-1-i}y^i \cdot 0} \\
+           &= x^{n-1}
+  \end{aligned}
+  \end{displaymath}
+  We plug our result $S_n(x,y) = x^{n-1}$ in Equation \eqref{eq4}, then we can get the recurrence (6.75) in textbook.
+  \begin{equation}
+  U_n(x,y) = xU_{n-1}(x,y) + \frac{x^n}{n} + yx^{n-1}
+  \end{equation}
+  Solving the recurrence is quite simple and the derivations are as follows (Eqn.~\eqref{eq5}).
+  \begin{equation}
+  \begin{aligned}
+  U_n(x,y) &= xU_{n-1}(x,y) + \frac{x^n}{n} + yx^{n-1}\\
+           &= x\left(xU_{n-2}(x,y) + \frac{x^{n-1}}{n-1} + yx^{n-2}\right) + \frac{x^n}{n} + yx^{n-1} \\
+           &= \cdots \\
+           &= x^n U_0(x,y) + nx^{n-1}y + x^n \sum_{i=1}^n \frac{1}{i} \\
+           &= x^n H_n + nx^{n-1}y
+  \end{aligned}
+  \label{eq5}
+  \end{equation}
+  Therefore, we come to the same conclusion as the conclusion in textbook.
+  \end{solution}
+
+  \item [9. ] About how many square kilometers are in 8 square miles?
+  \begin{solution}
+  We have talked about unit transform from miles to kilometers in textbook, and we find out the coefficient is approximately $\phi$ in coincidence. Thus, the coefficient of unit transform from square miles to square kilometers should be $\phi^2$. Therefore, we just need to use Fibonacci radix system to represent the number of square miles, and left-shift all the digit twice then we can get the approximate number of square kilometers. Since $8 = F_6$, so the answer should be approximately $F_8 = 21$ square kilometers. Actually, the more accurate result is $20.72$, which is quite close to our approximation.
+  \end{solution}
+
+  \item [10. ] What is the continued fraction representation of $\phi$?
+  \begin{solution}
+  Here is an interesting property of $\phi$.
+  \begin{displaymath}
+  \phi = \frac{1 + \sqrt{5}}{2} = 1 + \frac{\sqrt{5} - 1}{2} = 1 + \frac{2}{\sqrt{5} + 1} = 1 + \frac{1}{\phi}
+  \end{displaymath}
+  Therefore, we can use this property infinitely to get the continued representation of $\phi$.
+  \begin{displaymath}
+  \phi = 1 + \frac{1}{1 + \frac{1}{1 + \frac{1}{1 + ...}}}
+  \end{displaymath}
+  Therefore, all the coefficients $a_i$ in the continued fraction representation of $\phi$ is $1$, that is, $a_0 = 1, a_1 = 1, a_2 = 1, \cdots$. What's more, according to textbook, the Stern-Brocot representation is $RLRLRLRL\cdots$.
+  \end{solution}
+\end{enumerate}
+\section{Basic Problems}
+\begin{enumerate}
+  \item [14. ] Prove the power identity for Eulerian numbers (Formula (6.37) in textbook).
+  \begin{proof}
+     Let us prove the power identity for Eulerian numbers by induction on $n$. When $n = 1$, it is easy to verify that
+     \begin{displaymath}
+     1 = x^0 = \left\langle \begin{matrix} 0\\0\end{matrix}\right\rangle \binom{x}{0} = \sum_k {\left\langle \begin{matrix} 0\\k\end{matrix}\right\rangle \binom{x+k}{0}}
+     \end{displaymath}
+     Now suppose the conclusion holds for $n = m$ and we will prove it still holds for $n = m+1$.
+     \begin{displaymath}
+     \begin{aligned}
+     \sum_k {\left\langle\begin{matrix} m+1\\k\end{matrix}\right\rangle \binom{x+k}{m+1}} &= \sum_k {\left((k+1) \left\langle\begin{matrix} m\\k\end{matrix}\right\rangle + (m+1-k) \left\langle\begin{matrix} m\\k-1\end{matrix}\right\rangle\right)\binom{x+k}{m+1}} \\
+     &= \sum_k {(k+1) \left\langle\begin{matrix} m\\k\end{matrix}\right\rangle \binom{x+k}{m+1}} + \sum_k{(m+1-k)\left\langle\begin{matrix} m\\k-1\end{matrix}\right\rangle \binom{x+k}{m+1}} \\
+     &= \sum_k {(k+1) \left\langle\begin{matrix} m\\k\end{matrix}\right\rangle \binom{x+k}{m+1}} + \sum_k{(m-k)\left\langle\begin{matrix} m\\k\end{matrix}\right\rangle \binom{x+k+1}{m+1}} \\
+     &= \sum_k {\left\langle\begin{matrix} m\\k\end{matrix}\right\rangle \left((k+1)\binom{x+k}{m+1} + (m-k) \binom{x+k+1}{m+1}\right)} \\
+     &= \sum_k {\left\langle\begin{matrix} m\\k\end{matrix}\right\rangle \left(\frac{(x+k)!(k+1)}{(m+1)!(x+k-m-1)!} + \frac{(x+k+1)!(m-k)}{(m+1)!(x+k-m)!} \right)}
+     \end{aligned}
+     \end{displaymath}
+     Let us focus on the formula in brackets, which is
+     \begin{displaymath}
+     \frac{(x+k)!(k+1)}{(m+1)!(x+k-m-1)!} + \frac{(x+k+1)!(m-k)}{(m+1)!(x+k-m)!} \stackrel{\Delta}{=} S(k)
+     \end{displaymath}
+     Simplify the formula above as follows.
+     \begin{displaymath}
+     \begin{aligned}
+     S(k) &= \frac{(x+k)!}{(x+k-m)!m!} \left(\frac{(k+1)(x+k-m)}{m+1} + \frac{(x+k+1)(m-k)}{m+1} \right) \\
+       &= \binom{x+k}{m} \frac{x + mx}{m+1} \\
+       &= \binom{x+k}{m} x
+     \end{aligned}
+     \end{displaymath}
+     Plug the result of $S$ in the derivations above, we know that
+     \begin{displaymath}
+     \begin{aligned}
+     \sum_k {\left\langle\begin{matrix} m+1\\k\end{matrix}\right\rangle \binom{x+k}{m+1}} &= \sum_k {\left\langle\begin{matrix} m\\k\end{matrix}\right\rangle \cdot S(k)} \\
+                                                                                          &= \sum_k {\left\langle\begin{matrix} m\\k\end{matrix}\right\rangle \binom{x+k}{m} x} \\
+                                                                                          &= x \sum_k {\left\langle\begin{matrix} m\\k\end{matrix}\right\rangle \binom{x+k}{m}} \\
+                                                                                          &= x \cdot x^m \\
+                                                                                          &= x^{m+1}
+     \end{aligned}
+     \end{displaymath}
+     Therefore, the conclusion is still holds for $n = m+1$. Hence, the conclusion is correct.
+  \end{proof}
+
+  \item [15. ] Prove the Eulerian identity (Formula (6.39) in textbook) by taking the $m$-th difference of Formula (6.37) in textbook.
+  \begin{proof}
+  Notice that $\Delta\left(\binom{x+k}{n}\right) = \binom{x+k+1}{n} - \binom{x+k}{n} = \binom{x+k}{n-1}$, so $\Delta^m\left(\binom{x+k}{n}\right) = \binom{x+k}{n-m}$. Take the $m$-th difference of Formula (6.37) in textbook, we have:
+  \begin{displaymath}
+  \begin{aligned}
+  & \Delta^m{x^n} = \sum_k{\left\langle\begin{matrix} n\\k\end{matrix}\right\rangle \Delta^m{\binom{x+k}{n}}} \\
+  \stackrel{(5.40)}{\Longrightarrow} & \quad \sum_k \binom{m}{k} (-1)^{m-k} (x+k)^n = \sum_k{\left\langle\begin{matrix} n\\k\end{matrix}\right\rangle \binom{x+k}{n-m}}\\
+  \stackrel{x = 0}{\Longrightarrow} & \quad \sum_k \binom{m}{k} (-1)^{m-k} k^n = \sum_k{\left\langle\begin{matrix} n\\k\end{matrix}\right\rangle \binom{k}{n-m}} \\
+  \stackrel{(6.19)}{\Longrightarrow} & \quad m! {n \brace m} = \sum_k{\left\langle\begin{matrix} n\\k\end{matrix}\right\rangle \binom{k}{n-m}} \\
+  \end{aligned}
+  \end{displaymath}
+  Thus, the formula is proved.
+  \end{proof}
+
+  \item [16. ] What is the general solution of the double recurrence
+  \begin{displaymath}
+  \begin{aligned}
+    & A_{n,0} = a_n [n \geq 0]; \qquad A_{0, k} = 0, \quad \textrm{if\ } k > 0;\\
+    & A_{n,k} = kA_{n-1,k} + A_{n-1,k-1}, \quad \textrm{integers\ } k,n;
+  \end{aligned}
+  \end{displaymath}
+  when $k$ and $n$ range over the set of all integers?
+  \begin{conclusion} Our conclusion about $A_{n,k}$ is as follows (Eqn.~\eqref{eq16}).
+  \begin{equation}
+  A_{n,k} = \sum_{j \geq 0}{{n-j \brace k}a_j}
+  \label{eq16}
+  \end{equation}
+  \end{conclusion}
+  \begin{proof} We will prove our conclusion by induction to $n$.
+  \begin{itemize}
+  \item \textbf{(Induction Basis)} When $n = 0$, our conclusion is $A_{0, k} = \sum_{j \geq 0} {{0 - j \brace k}a_j} = a_0 [k = 0]$, which satisfies the condition that $A_{0, k} = 0\ (k > 0)$ and $A_{0,0} = a_0$.
+  \item \textbf{(Induction Step)} Assume the conclusion holds for $n = m - 1$, and we will prove that the conclusion still holds for $n = m$. Thus we can have the following derivations.
+  \begin{displaymath}
+  \begin{aligned}
+  A_{m,k} &= k A_{m-1,k} + A_{m-1,k-1}\\
+          &= k \sum_{j \geq 0}{{m-1-j \brace k}a_j} + \sum_{j \geq 0}{{m-1-j \brace k-1}a_j} \\
+          &= \sum_{j \geq 0}{a_j \left(k{m-1-j \brace k} + {m-1-j \brace k-1}\right)} \\
+          &= \sum_{j \geq 0}{{m-j \brace k}a_j}
+  \end{aligned}
+  \end{displaymath}
+  The derivations above tell us the conclusion still holds for $n = m$.
+  \end{itemize}
+  Therefore, the conclusion holds for all integer $n$ and $k$.
+
+  We also want to emphasize that the summation is always finite for a given $n$, which can be easily verified by connecting $A_{n,k}$ with the Stirling's Numbers for subsets ${n \brace k}$.
+  \end{proof}
+
+\end{enumerate}
+%=================== =====================================================
+\end{document}

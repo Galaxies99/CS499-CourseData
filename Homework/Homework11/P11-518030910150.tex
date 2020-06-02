@@ -1,0 +1,401 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{ctex}
+\usepackage{amsmath,amscd,amsbsy,amssymb,latexsym,url,bm,amsthm}
+\usepackage{epsfig,graphicx,subfigure}
+\usepackage{enumerate}
+\usepackage{wrapfig}
+\usepackage{mathrsfs,euscript}
+\usepackage[usenames]{xcolor}
+\usepackage{hyperref}
+\usepackage[vlined,ruled,linesnumbered]{algorithm2e}
+\hypersetup{colorlinks=true,linkcolor=black}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}
+\newtheorem*{observation}{Observation}
+\newtheorem*{solution}{Solution}
+\newtheorem*{conclusion}{Conclusion}
+\newtheorem{definition}{Definition}
+\theoremstyle{definition}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\postscript}[2]
+ {\setlength{\epsfxsize}{#2\hsize}
+  \centerline{\epsfbox{#1}}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+\makeatletter \renewenvironment{proof}[1][Proof] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+\makeatletter
+\renewenvironment{solution}[1][Solution] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+
+\begin{document}
+\noindent
+
+%========================================================================
+\noindent\framebox[\linewidth]{\shortstack[c]{
+\Large{\textbf{Homework 11}}\vspace{1mm}\\
+CS499-Mathematical Foundations of Computer Science, Jie Li, Spring 2020.}}
+\begin{center}
+\footnotesize{\color{blue}Name: ·½γό½ά (Hongjie Fang)  \quad Student ID: 518030910150 \quad Email: galaxies@sjtu.edu.cn}
+\end{center}
+
+\section{Chapter 1: Recurrent Problems}
+\begin{enumerate}
+\item [8. ] Solve the recurrence
+    \begin{displaymath}
+    \begin{aligned}
+    & Q_0 = \alpha, \qquad Q_1 = \beta; \\
+    & Q_n = \frac{1 + Q_{n-1}}{Q_{n-2}}, \quad \textrm{for } n > 1.
+    \end{aligned}
+    \end{displaymath}
+    Assume that $Q_n \ne 0$ for all $n \ge 0$. \textit{\color{blue} Hint: $Q_4 = (1+\alpha)/\beta$.}
+
+    \begin{solution}
+    Let us first calculate some small cases of $\{Q_n\}$.
+
+    \begin{displaymath}
+    \begin{aligned}
+    & Q_0 = \alpha; \\
+    & Q_1 = \beta; \\
+    & Q_2 = \frac{1 + Q_1}{Q_0} = \frac{1+\beta}{\alpha}; \\
+    & Q_3 = \frac{1 + Q_2}{Q_1} = \frac{1 + \frac{1 + \beta}{\alpha}}{\beta} = \frac{1 + \alpha + \beta}{\alpha\beta}; \\
+    & Q_4 = \frac{1 + Q_3}{Q_2} = \frac{1 + \frac{1 + \alpha + \beta}{\alpha\beta}}{\frac{1+\beta}{\alpha}} = \frac{1 + \alpha}{\beta}; \\
+    & Q_5 = \frac{1 + Q_4}{Q_3} = \frac{1 + \frac{1 + \alpha}{\beta}}{\frac{1 + \alpha + \beta}{\alpha\beta}} = \alpha; \\
+    & Q_6 = \frac{1 + Q_5}{Q_4} = \frac{1 + \alpha}{\frac{1 + \alpha}{\beta}} = \beta.
+    \end{aligned}
+    \end{displaymath}
+
+    It's easy to find out the patterns of $\{Q_n\}$, so we can draw the following conclusion (Eqn. \eqref{eq1}):
+    \begin{equation}\label{eq1}
+    Q_n = Q_{n \textrm{ mod } 5}
+    \end{equation}
+
+    Let's prove the conclusion by induction on $n$. When $n < 5$, the conclusion is obviously true.
+
+    Then suppose the conclusion holds for $n \leq m - 1\ (m \ge 5)$, we are going to proof the conclusion still holds for $n = m$. Let us make some following discussions.
+    \begin{itemize}
+    \item When $m\textrm{ mod }5 = 0$,
+    \begin{displaymath}
+    Q_m = \frac{1 + Q_{m-1}}{Q_{m-2}} = \frac{1 + Q_4}{Q_3} = \frac{1 + \frac{1 + \alpha}{\beta}}{\frac{1 + \alpha + \beta}{\alpha\beta}} = \alpha = Q_0
+    \end{displaymath}
+    \item When $m\textrm{ mod }5 = 1$,
+    \begin{displaymath}
+    Q_m = \frac{1 + Q_{m-1}}{Q_{m-2}} = \frac{1 + Q_0}{Q_4} = \frac{1 + \alpha}{\frac{1 + \alpha}{\beta}} = \beta = Q_1
+    \end{displaymath}
+    \item When $m\textrm{ mod }5 = 2$,
+    \begin{displaymath}
+    Q_m = \frac{1 + Q_{m-1}}{Q_{m-2}} = \frac{1 + Q_1}{Q_0} = \frac{1+\beta}{\alpha} = Q_2
+    \end{displaymath}
+    \item When $m\textrm{ mod }5 = 3$,
+    \begin{displaymath}
+    Q_m = \frac{1 + Q_{m-1}}{Q_{m-2}} = \frac{1 + Q_2}{Q_1} = \frac{1 + \frac{1 + \beta}{\alpha}}{\beta} = \frac{1 + \alpha + \beta}{\alpha\beta} = Q_3
+    \end{displaymath}
+    \item When $m\textrm{ mod }5 = 4$,
+    \begin{displaymath}
+    Q_m = \frac{1 + Q_{m-1}}{Q_{m-2}} = \frac{1 + Q_3}{Q_2} = \frac{1 + \frac{1 + \alpha + \beta}{\alpha\beta}}{\frac{1+\beta}{\alpha}} = \frac{1 + \alpha}{\beta} = Q_4
+    \end{displaymath}
+    \end{itemize}
+
+    Therefore, the conclusion still holds for $n = m$.
+
+    Therefore, the conclusion holds for all non-negative integer $n$. So the answer to the recurrence is as follows (Eqn. \eqref{eq2}).
+    \begin{equation}\label{eq2}
+    \left\{
+    \begin{aligned}
+    & Q_{5k} = \alpha, & (k \in \mathbb{N}); \\
+    & Q_{5k+1} = \beta, & (k \in \mathbb{N}); \\
+    & Q_{5k+2} = \frac{1+\beta}{\alpha}, & (k \in \mathbb{N}); \\
+    & Q_{5k+3} = \frac{1 + \alpha + \beta}{\alpha\beta}, & (k \in \mathbb{N}); \\
+    & Q_{5k+4} = \frac{1 + \alpha}{\beta}, & (k \in \mathbb{N}); \\
+    \end{aligned}
+    \right.
+    \end{equation}
+    \end{solution}
+
+\item [21. ] Suppose there are $2n$ people in a circle; the first $n$ are ``good guys'' and the last $n$ are ``bad guys''. Show that there is always an integer $m$ (depending on $n$) such that, if we go around the circle executing every $m$-th person, all the bad guys are first to go. (For example, when $n = 3$ we can take $m = 5$; when $n = 4$ we can take $m = 30$.)
+
+    \begin{proof}
+    Let $m$ be the least common multiple (LCM) of $2n, 2n - 1, \cdots, n + 1$, which is all the bad guys' number, that is,
+    \begin{equation}\label{eq3}
+    m = \mathrm{lcm}(2n, 2n-1, \cdots, n+1)
+    \end{equation}
+
+    Thus, we can execute all the bad guys according to the descending order of the number. The first one to be executed is $2n$-numbered bad guy, and the second one to be executed is $2n - 1$-numbered bad guy because the the $2n$-numbered bad guy is already executed, $\cdots$, and the last one to be executed is $(n + 1)$-numbered bad guy since the rest bad guys are all executed. Therefore, all the bad guys will be executed after $n$ round and no good guy is executed in this process, which satisfies the requirement.
+
+    Therefore, there is always an integer $m$ calculated by Eqn. \eqref{eq3} which depends on $n$, such that, if we go around the circle executing every $m$-th person, all the bad guys are first to go.
+    \end{proof}
+\end{enumerate}
+
+\section{Chapter 2: Sums}
+\begin{enumerate}
+\item [9. ] What is the law of exponents for rising factorial powers, analogous to (2.52) in the textbook? Use this to define $x^{\overline{-n}}$.
+
+  \begin{solution} The law of exponents for rising factorial powers is as follows.
+    \begin{equation}\label{eq4}
+        x^{\overline{m+n}} = x^{\overline{m}}(x+m)^{\overline{n}}  \quad \quad (m, n \in \mathbb{Z})
+    \end{equation}
+
+    Thus, we can apply $m = -n$ and $n = n$ in Equation \eqref{eq4} and derive the following formula.
+
+    \begin{equation} \label{eq5}
+    \begin{aligned}
+                        & \quad x^{\overline{-n}} (x-n)^{\overline{n}} = x^{\overline{-n + n}} = x^{\overline{0}} = 1 \\
+        \Longrightarrow & \quad x^{\overline{-n}} = \frac{1}{(x-n)^{\overline{n}}} = \frac{1}{(x-1)^{\underline{n}}} \quad \quad (n \in \mathbb{N_+})
+    \end{aligned}
+    \end{equation}
+
+    Using Equation \eqref{eq5}, we can define $x^{\overline{-n}}$ as $\frac{1}{(x-1)^{\underline{n}}}$ when $n \in \mathbb{N_+}$.
+  \end{solution}
+
+  \item [10. ] The text derives the following formula for the difference of a product:
+  \begin{equation}\label{eq6}
+    \Delta(uv) = u\Delta{v} + \mathrm{E} v\Delta{u}
+  \end{equation}
+  How can this formula be correct, when the left-hand side is symmetric with respect to $u$ and $v$ but the right-hand side is not?
+
+  \begin{solution}
+    The derivation of Equation \eqref{eq6} is on the textbook, so it is obviously correct. Here we also provide the derivations of the formula as follows. We assume that the operator $\Delta$ is operated on variable $x$.
+    \begin{displaymath}
+    \begin{aligned}
+    \Delta(uv) &= u(x+1)v(x+1) - u(x)v(x) \\
+               &= (u(x+1)v(x+1) - u(x)v(x+1)) + (u(x)v(x+1) - u(x)v(x)) \\
+               &= v(x+1) (u(x+1) - u(x)) + u(x) (v(x+1) - v(x)) \\
+               &= v(x+1) \Delta{u(x)} + u(x) \Delta{v(x)} \\
+               &= u \Delta{v} + \mathrm{E} v \Delta{u} \\
+    \end{aligned}
+    \end{displaymath}
+
+    Actually, on one hand, we have the Equation \eqref{eq6}; on the other hand, we can have the following equation (Equation \eqref{eq7}).
+    \begin{equation} \label{eq7}
+    \Delta(uv) = v\Delta{u} + \mathrm{E}u\Delta{v}
+    \end{equation}
+    It's easy to see that two right-hand sides of Equation \eqref{eq6} and Equation \eqref{eq7} are symmetric.
+
+    What's more, if $u$ and $v$ are differentiable functions, then we can substitute the notation $\Delta$ with the notation $\mathrm{D}$ by taking the limit as the delta number of independent variable goes to $0$. As a result, $\mathrm{E}v$ equals to $v$ under $\mathrm{D}$. So the equation becomes $\mathrm{D}(uv) = u\mathrm{D}u + v\mathrm{D}u$, which is symmetric on both sides.
+  \end{solution}
+\end{enumerate}
+
+\section{Chapter 3: Integer Functions}
+\begin{enumerate}
+  \item[9. ] Egyptian mathematicians in 1800 B.C. represented rational numbers between 0 and 1 as sums of unit fractions $1/x_1 + \cdots + 1/x_k$, where the $x$'s were distinct positive integers. For example, they wrote $\frac{1}{3} + \frac{1}{15}$ instead of $\frac{2}{5}$. Prove that it is always possible to do this in a systematic way: if $0 \leq m/n \leq 1$, then
+      \begin{displaymath}
+      \frac{m}{n} = \frac{1}{q} + \left\{ \mathrm{representation\ of\ } \left( \frac{m}{n} - \frac{1}{q} \right) \right\}, \quad \quad q = \left\lceil \frac{n}{m} \right\rceil
+      \end{displaymath}
+      (This is Fibonacci's algorithm, due to Leonardo Fibonacci, A.D. 1202.)
+  \begin{proof} The process is obviously correct, what we have to prove is that the process will terminates in finite steps. Notice that
+  \begin{displaymath}
+  \frac{m}{n} - \frac{1}{q} = \frac{mq - n}{nq} = \frac{m\cdot \lceil \frac{n}{m} \rceil - n}{n \lceil \frac{n}{m} \rceil} = \frac{n \mathrm{\ mumble\ } m}{n \lceil \frac{n}{m} \rceil}
+  \end{displaymath}
+  where, $n \mathrm{\ mumble\ } m$ is a simplified notation of $(m\cdot \lceil \frac{n}{m} \rceil - n)$, which appears in the textbook.
+
+  Consider about the numerator of the result, we know that $0 \leq n \mathrm{\ mumble\ } m < m$. So the numerator of the rest number will strictly decrease after each step. At first the numerator of the $\frac{m}{n}$ is $m$, so the process will take at most $m$ steps because of the strictly-decreasing property of the numerator. Thus, the process will end in finite steps. So it is always possible to do the process in the systematic way above, and the process can terminate in finite steps.
+  \end{proof}
+
+  \item[10. ] Show that the expression
+  \begin{displaymath}
+  \left\lceil \frac{2x+1}{2} \right\rceil - \left\lceil \frac{2x+1}{4} \right\rceil + \left\lfloor \frac{2x+1}{4} \right\rfloor
+  \end{displaymath}
+  is always either $\lfloor x \rfloor$ or $\lceil x \rceil$. In what circumstances does each case arise?
+
+  \begin{proof}
+  We can make the following derivation first.
+  \begin{displaymath}
+  \left\lceil \frac{2x+1}{2} \right\rceil - \left\lceil \frac{2x+1}{4} \right\rceil + \left\lfloor \frac{2x+1}{4} \right\rfloor
+  = \left\lceil x + \frac{1}{2} \right\rceil - \left[\frac{2x+1}{4} \textrm{ is not an integer}\right]
+  \end{displaymath}
+  Let us make the following discussions.
+  \begin{itemize}
+  \item If $x = 2k - \frac{1}{2}\ (k \in \mathbb{Z})$, $\frac{2x+1}{4}$ is an integer, therefore,
+  \begin{displaymath}
+  \left\lceil \frac{2x+1}{2} \right\rceil - \left\lceil \frac{2x+1}{4} \right\rceil + \left\lfloor \frac{2x+1}{4} \right\rfloor
+  = \left\lceil x + \frac{1}{2} \right\rceil = 2k = \lceil x \rceil
+  \end{displaymath}
+  \item If $x \ne 2k - \frac{1}{2}\ (k \in \mathbb{Z})$, $\frac{2x+1}{4}$ is not an integer, therefore,
+  \begin{displaymath}
+  \left\lceil \frac{2x+1}{2} \right\rceil - \left\lceil \frac{2x+1}{4} \right\rceil + \left\lfloor \frac{2x+1}{4} \right\rfloor
+  = \left\lceil x + \frac{1}{2} \right\rceil - 1 = \left\lceil x - \frac{1}{2} \right\rceil
+  \end{displaymath}
+  According to the answers to Exercise 3.2, we know that $\left\lceil x - \frac{1}{2} \right\rceil$ is the nearest integer to the real number $x$, so it is either $\lfloor x \rfloor$ or $\lceil x \rceil$. Note here when $x$ is in exactly halfway between two integers, we choose $\lfloor x \rfloor$ as the answer.
+  \end{itemize}
+
+  In summary, the result of the expression is always either $\lfloor x \rfloor$ or $\lceil x \rceil$.
+
+  Now let us find out in what circumstances does each case arise.
+  \begin{itemize}
+  \item If $0 \leq \{x\} < \frac{1}{2}$, then the result is $\lfloor x \rfloor$ according to the previous discussions and the answers to Exercise 3.2;
+  \item If $\frac{1}{2} < \{x\} < 1$, then the result is $\lceil x \rceil$ according to the previous discussions and the answers to Exercise 3.2;
+  \item If $\{x\} = \frac{1}{2}$, then:
+  \begin{itemize}
+  \item If $x = 2k - \frac{1}{2}\ (k \in \mathbb{Z})$, the result is $\lceil x \rceil$ according to the previous discussions;
+  \item If $x = 2k + \frac{1}{2}\ (k \in \mathbb{Z})$, the result is $\lfloor x \rfloor$ according to the previous discussions and the answers to Exercise 3.2.
+  \end{itemize}
+  So in this case, $x$ rounds to the nearest even integer.
+  \end{itemize}
+  \end{proof}
+\end{enumerate}
+
+\section{Chapter 4: Number Theory}
+\begin{enumerate}
+\item[10. ] Compute $\varphi(999)$.
+  \begin{solution} Since $999 = 3 \times 11 \times 37$, the result can be derived as follows (Eqn. \eqref{eq8}).
+  \begin{equation}\label{eq8}
+  \varphi(999) = \varphi(3) \cdot \varphi(11) \cdot \varphi(37) = 2 \times 10 \times 36 = 720
+  \end{equation}
+  \end{solution}
+
+\item[14. ] Prove or disprove:
+\begin{enumerate}[a. ]
+\item $\mathrm{gcd}(km, kn)=k \cdot \mathrm{gcd}(m,n)$;
+\item $\mathrm{lcm}(km, kn)=k \cdot \mathrm{lcm}(m,n)$.
+\end{enumerate}
+  \begin{solution}
+  Here is the solution to two sub-questions.
+  \begin{enumerate}[a. ]
+  \item Let $m'$ denote $km$, $n'$ denote $kn$, $g$ denote $\mathrm{gcd}(m, n)$ and $g'$ denote $\mathrm{gcd}(km, kn)$. Using the Equation (4.12) and Equation (4.14) in textbook, we know the following properties.
+  \begin{displaymath}
+  \begin{aligned}
+  & m'_p = k_p + m_p, \quad n'_p = k_p + n_p, & \qquad \textrm{for all } p; \\
+  & g'_p = \min{(m'_p, n'_p)}, & \qquad \textrm{for all } p; \\
+  & g_p = \min{(m_p, n_p)}, & \qquad \textrm{for all } p; \\
+  \end{aligned}
+  \end{displaymath}
+  Suppose $q = k \cdot g = k \cdot \mathrm{gcd}(m,n)$, then according to Equation (4.12), Equation (4.14) and properties above, we can make the following derivations.
+  \begin{displaymath}
+  q_p = k_p + g_p = k_p + \min{(m_p, n_p)} = \min{(k_p + m_p, k_p + n_p)} = \min{(m'_p, n'_p)} = g'_p, \quad \textrm{for all } p.
+  \end{displaymath}
+  Therefore, we know that $q = g'$, that is, $\mathrm{gcd}(km, kn) = k \cdot \mathrm{gcd}(m,n)$. Therefore the conclusion is correct.
+
+  \item Let $m'$ denote $km$, $n'$ denote $kn$, $l$ denote $\mathrm{lcm}(m, n)$ and $l'$ denote $\mathrm{lcm}(km, kn)$. Using the Equation (4.12) and Equation (4.15) in textbook, we know the following properties.
+  \begin{displaymath}
+  \begin{aligned}
+  & m'_p = k_p + m_p, \quad n'_p = k_p + n_p, & \qquad \textrm{for all } p; \\
+  & l'_p = \max{(m'_p, n'_p)}, & \qquad \textrm{for all } p; \\
+  & l_p = \max{(m_p, n_p)}, & \qquad \textrm{for all } p; \\
+  \end{aligned}
+  \end{displaymath}
+  Suppose $q = k \cdot l = k \cdot \mathrm{lcm}(m,n)$, then according to Equation (4.12), Equation (4.15) and properties above, we can make the following derivations.
+  \begin{displaymath}
+  q_p = k_p + l_p = k_p + \max{(m_p, n_p)} = \max{(k_p + m_p, k_p + n_p)} = \max{(m'_p, n'_p)} = l'_p, \quad \textrm{for all } p.
+  \end{displaymath}
+  Therefore, we know that $q = l'$, that is, $\mathrm{lcm}(km, kn) = k \cdot \mathrm{lcm}(m,n)$. Therefore the conclusion is correct.
+  \end{enumerate}
+  \end{solution}
+\end{enumerate}
+
+\section{Chapter 5: Binomial Coefficients}
+\begin{enumerate}
+\item[3. ] Prove the hexagon property.
+  \begin{displaymath}
+  \binom{n-1}{k-1}\binom{n}{k+1}\binom{n+1}{k}=\binom{n-1}{k}\binom{n+1}{k+1}\binom{n}{k-1}
+  \end{displaymath}
+  \begin{proof} We can prove the property by simply unfolding the notations of binomial coefficients, as Equation \eqref{eq9} shown.
+  \begin{equation}\label{eq9}
+  \begin{aligned}
+  \binom{n-1}{k-1}\binom{n}{k+1}\binom{n+1}{k} &= \frac{(n-1)!}{(k-1)!(n-k)!} \cdot \frac{n!}{(k+1)!(n-k-1)!} \cdot \frac{(n+1)!}{k!(n-k+1)!} \\
+                                               &= \frac{(n-1)!}{k!(n-k-1)!} \cdot \frac{(n+1)!}{(k+1)!(n-k)!} \cdot \frac{n!}{(k-1)!(n-k+1)!} \\
+                                               &= \binom{n-1}{k}\binom{n+1}{k+1}\binom{n}{k-1}
+  \end{aligned}
+  \end{equation}
+  \end{proof}
+
+\item[13. ] Find relations between the superfactorial function $P_n = \prod_{k=1}^n k!$, the hyperfactorial function $Q_n = \prod_{k=1}^n k^k$, and the product $R_n = \prod_{k=0}^n \binom{n}{k}$.
+  \begin{solution}
+  Let us first simplify $R_n$ as follows.
+  \begin{displaymath}
+  R_n = \prod_{k=0}^n \binom{n}{k} = \prod_{k=0}^n \frac{n!}{k!(n-k)!} = \frac{(n!)^{n+1}}{\left(\prod_{k=0}^n k!\right)^2} = \frac{(n!)^{n+1}}{P_n^2}
+  \end{displaymath}
+
+  Actually this result can be simplified further as follows.
+  \begin{displaymath}
+  R_n = \frac{(n!)^{n+1}}{P_n^2} = \frac{\prod_{k=1}^n k^{n+1}}{\left(\prod_{k=1}^n k!\right) \cdot P_n} = \frac{\prod_{k=1}^n k^{n+1}}{\left(\prod_{k=1}^n k^{n-k+1}\right) \cdot P_n} = \frac{\prod_{k=1}^n k^k}{P_n} = \frac{Q_n}{P_n}
+  \end{displaymath}
+  Therefore, we derive an amazing relation among three functions, that is, $R_n = Q_n / P_n$. In our derivation process, another important relation between $P_n$ and $Q_n$ is that $P_nQ_n = (n!)^{n+1}$.
+  \end{solution}
+\end{enumerate}
+
+\section{Chapter 6: Special Numbers}
+\begin{enumerate}
+\item [11. ] What is $\sum_k(-1)^k{n \brack m}$, the row sum of Stirling's cycle-number triangle with alternating signs, when $n$ is a nonnegative integer?
+  \begin{solution}
+  According to the general formula (6.11) in textbook, we can make the following derivations (Eqn. \eqref{eq10}).
+  \begin{equation}\label{eq10}
+  \sum_k {n \brack m} (-1)^k = (-1)^{\overline{n}} = \left\{
+  \begin{aligned}
+  & 1 & \qquad & (n = 0)\\
+  & -1 & \qquad & (n = 1)\\
+  & 0 & \qquad  & (n > 1)
+  \end{aligned}\right. \quad \quad = [n=0] - [n=1]
+  \end{equation}
+  \end{solution}
+
+\item [12. ] Prove that Stirling numbers have an inversion law analogous to Formula (5.48) in textbook:
+  \begin{displaymath}
+  g(n) = \sum_k {n \brace k} (-1)^k f(k) \quad \Longleftrightarrow \quad f(n) = \sum_k {n \brack k} (-1)^k g(k)
+  \end{displaymath}
+  \begin{proof} We can split the conclusion to two sub-conclusions and prove them respectively.
+  \begin{itemize}
+  \item \textbf{($\Longrightarrow$)} If we have $g(n) = \sum_k {n \brace k} (-1)^k f(k)$, then $f(n) = \sum_k {n \brack k} (-1)^k g(k)$ is correct.
+  According to the similar form of the formula (6.31) in textbook, we can make the following derivations.
+  \begin{displaymath}
+  \begin{aligned}
+  f(n) &= \sum_k{ {n \brack k} (-1)^k g(k)} \\
+       &= \sum_k{{n \brack k} (-1)^k \left(\sum_m {{k \brace m} (-1)^m f(m)} \right)} \\
+       &= \sum_m{\sum_k {{n \brack k} {k \brace m} (-1)^{k+m} f(m)}} \\
+       &= \sum_m{(-1)^{n+m}f(m)\sum_k {{n \brack k} {k \brace m} (-1)^{n-k}}} \\
+       &= \sum_m{(-1)^{n+m}f(m)[m=n]} \\
+       &= f(n)
+  \end{aligned}
+  \end{displaymath}
+  Therefore, the conclusion's correctness is proved.
+  \item \textbf{($\Longleftarrow$)} If we have $f(n) = \sum_k {n \brack k} (-1)^k g(k)$, then $g(n) = \sum_k {n \brace k} (-1)^k f(k)$ is correct. The proof process is similar to the previous one and we can draw the similar conclusion that the conclusion is correct.
+  \end{itemize}
+  Therefore, the conclusion is correct.
+  \end{proof}
+
+\item [16. ] What is the general solution of the double recurrence
+  \begin{displaymath}
+  \begin{aligned}
+    & A_{n,0} = a_n [n \geq 0]; \qquad A_{0, k} = 0, \quad \textrm{if\ } k > 0;\\
+    & A_{n,k} = kA_{n-1,k} + A_{n-1,k-1}, \quad \textrm{integers\ } k,n;
+  \end{aligned}
+  \end{displaymath}
+  when $k$ and $n$ range over the set of all integers?
+  \begin{conclusion} Our conclusion about $A_{n,k}$ is as follows (Eqn.~\eqref{eq16}).
+  \begin{equation}
+  A_{n,k} = \sum_{j \geq 0}{{n-j \brace k}a_j}
+  \label{eq16}
+  \end{equation}
+  \end{conclusion}
+  \begin{proof} We will prove our conclusion by induction to $n$.
+  \begin{itemize}
+  \item \textbf{(Induction Basis)} When $n = 0$, our conclusion is $A_{0, k} = \sum_{j \geq 0} {{0 - j \brace k}a_j} = a_0 [k = 0]$, which satisfies the condition that $A_{0, k} = 0\ (k > 0)$ and $A_{0,0} = a_0$.
+  \item \textbf{(Induction Step)} Assume the conclusion holds for $n = m - 1$, and we will prove that the conclusion still holds for $n = m$. Thus we can have the following derivations.
+  \begin{displaymath}
+  \begin{aligned}
+  A_{m,k} &= k A_{m-1,k} + A_{m-1,k-1}\\
+          &= k \sum_{j \geq 0}{{m-1-j \brace k}a_j} + \sum_{j \geq 0}{{m-1-j \brace k-1}a_j} \\
+          &= \sum_{j \geq 0}{a_j \left(k{m-1-j \brace k} + {m-1-j \brace k-1}\right)} \\
+          &= \sum_{j \geq 0}{{m-j \brace k}a_j}
+  \end{aligned}
+  \end{displaymath}
+  The derivations above tell us the conclusion still holds for $n = m$.
+  \end{itemize}
+  Therefore, the conclusion holds for all integer $n$ and $k$.
+
+  We also want to emphasize that the summation is always finite for a given $n$, which can be easily verified by connecting $A_{n,k}$ with the Stirling's Numbers for subsets ${n \brace k}$.
+  \end{proof}
+\end{enumerate}
+%=================== =====================================================
+\end{document}

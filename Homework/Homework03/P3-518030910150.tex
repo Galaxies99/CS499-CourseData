@@ -1,0 +1,286 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{ctex}
+\usepackage{amsmath,amscd,amsbsy,amssymb,latexsym,url,bm,amsthm}
+\usepackage{epsfig,graphicx,subfigure}
+\usepackage{enumerate}
+\usepackage{wrapfig}
+\usepackage{mathrsfs,euscript}
+\usepackage[usenames]{xcolor}
+\usepackage{hyperref}
+\usepackage[vlined,ruled,linesnumbered]{algorithm2e}
+\hypersetup{colorlinks=true,linkcolor=black}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}
+\newtheorem*{solution}{Solution}
+\newtheorem*{conclusion}{Conclusion}
+\newtheorem{definition}{Definition}
+\theoremstyle{definition}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\postscript}[2]
+ {\setlength{\epsfxsize}{#2\hsize}
+  \centerline{\epsfbox{#1}}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+\makeatletter \renewenvironment{proof}[1][Proof] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+\makeatletter
+\renewenvironment{solution}[1][Solution] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+
+\begin{document}
+\noindent
+
+%========================================================================
+\noindent\framebox[\linewidth]{\shortstack[c]{
+\Large{\textbf{Homework 03}}\vspace{1mm}\\
+CS499-Mathematical Foundations of Computer Science, Jie Li, Spring 2020.}}
+\begin{center}
+\footnotesize{\color{blue}Name: ·½γό½ά (Hongjie Fang)  \quad Student ID: 518030910150 \quad Email: galaxies@sjtu.edu.cn}
+\end{center}
+\section{Exercises of Chapter 3}
+\begin{enumerate}[1.]
+  \item When we analyzed the Josephus problem in Chap 1, we represented an arbitrary positive integer $n$ in the form $n = 2^m + l$, where $0 \leq l < 2^m$. Give explicit formulas for $l$ and $m$ as functions of $n$, using floor and/or ceiling brackets.
+  \begin{solution} The explicit formulas for $l$ and $m$ as functions of $n$ are as follows (Equation \eqref{eq1}).
+  \begin{equation}
+  m = \lfloor \log_2{n} \rfloor, \quad l = n - 2^m = n - 2^{\lfloor \log_2{n} \rfloor}
+  \label{eq1}
+  \end{equation}
+  \end{solution}
+  
+  \item What is a formula for the nearest integer to a given real number $x$? In case of ties, when $x$ is exactly halfway between two integers, give an expression that rounds \textbf{(a)} up - that is, to $\lceil x \rceil$; \textbf{(b)} down - that is, to $\lfloor x \rfloor$.
+  \begin{solution}
+    \textbf{(a)} If we use round-up when $x$ is halfway between two integers, then $\lfloor x + 0.5 \rfloor$ is the nearest integer to a given real number $x$; \textbf{(b)} If we use round-down when $x$ is halfway between two integers, then $\lceil x - 0.5 \rceil$ is the nearest integer to a given real number $x$.
+  \end{solution}
+  
+  \item Evaluate $\left\lfloor \lfloor m \alpha \rfloor n / \alpha\right\rfloor$, when $m$ and $n$ are positive integers and $\alpha$ is an irrational number greater than $n$.
+  \begin{solution} The formula can be derived as follows (Equation \eqref{eq3}), noticing that $0 \leq \{\cdot\} < 1$ and $0 < n/\alpha < 1$.
+  \begin{equation}
+  \begin{aligned}
+  \left\lfloor \lfloor m \alpha \rfloor n / \alpha\right\rfloor & = \left\lfloor (m \alpha - \{m \alpha\}) n / \alpha\right\rfloor \\
+  &= \left\lfloor mn - \{m \alpha\} \cdot (n / \alpha) \right\rfloor \\
+  &= mn +\left\lfloor -  \{m \alpha\} \cdot (n / \alpha) \right\rfloor \\
+  &= mn - 1
+  \label{eq3}
+  \end{aligned}
+  \end{equation}
+  \end{solution}
+  
+  \item The text describes the problems at levels 1 through 5. What is a level 0 problem? (This, by the way, is not a level 0 problem.)
+  \begin{solution}
+  In my opinion, a level 0 problem is the problem which only requires us to guess the conclusions - even without proving them! 
+  \end{solution}
+  
+  \item Find a necessary and sufficient condition that $\lfloor nx \rfloor = n\lfloor x \rfloor$, when $n$ is a positive integer. (Your condition should involve $\{x\}$.)
+  \begin{solution} The condition and the derivation process are as follows (Equation \eqref{eq5}).
+  \begin{equation}
+  \begin{aligned}
+  \lfloor nx \rfloor = n \lfloor x \rfloor &\Longleftrightarrow \lfloor nx \rfloor = nx - n\{x\}\\
+                                           &\Longleftrightarrow nx - n\{x\} \leq nx < nx - n\{x\} + 1 \\
+                                           &\Longleftrightarrow \{x\} < \frac{1}{n}
+  \end{aligned}
+  \label{eq5}
+  \end{equation}
+  \end{solution}
+  
+  \item Can something interesting be said about $\lfloor f(x) \rfloor$ when $f(x)$ is a continuous monotonically decreasing function that takes integer values only when $x$ is an integer?
+  \begin{conclusion}
+  $\lfloor f(x) \rfloor = \lfloor f(\lceil x \rceil) \rfloor$.
+  \end{conclusion}
+  \begin{proof}
+  Notice that $x \leq \lceil x \rceil$. If $x = \lceil x \rceil$, then the conclusion is obviously true. Consider about the condition that $x < \lceil x \rceil$. $f(x)$ is a continuous monotonically decreasing function and $\lfloor \cdot \rfloor$ is a monotonically non-decreasing function, so $\lfloor f(x) \rfloor$ is a monotonically non-increasing function, which means that $\lfloor f(x) \rfloor \geq \lfloor f(\lceil x \rceil) \rfloor$. 
+  \begin{itemize}
+  \item If $\lfloor f(x) \rfloor = \lfloor f(\lceil x \rceil) \rfloor$, then we derive the conclusion successfully! 
+  \item If $\lfloor f(x) \rfloor > \lfloor f(\lceil x \rceil) \rfloor$, then combining with $f(x) \geq \lfloor f(x) \rfloor$, we get the following formula.
+  \begin{displaymath}
+  \lfloor f(\lceil x \rceil) \rfloor < \lfloor f(x) \rfloor \leq f(x)
+  \end{displaymath}
+  Since $\lfloor f(x) \rfloor$ is an integer, we can transform the left part of the formula above as follows.
+  \begin{displaymath}
+  f(\lceil x \rceil) < \lfloor f(x) \rfloor \leq f(x)
+  \end{displaymath}
+  According to the formula above and the property that $f(x)$ is continuous, there exists a $y$ satisfying that $x \leq y < \lceil x \rceil$ and $f(y) = \lfloor f(x) \rfloor$. Then we can come to a conclusion that $y$ is an integer because of the special property of $f(x)$ and the fact that $f(y) = \lfloor f(x) \rfloor$ is an integer. However,  there is no integer in range $[x, \lceil x \rceil)$ according to the definition of $\lceil \dot \rceil$, which leads to a contradiction. Thus, this case cannot happen.
+  \end{itemize}
+  In summary, we prove that $\lfloor f(x) \rfloor = \lfloor f(\lceil x \rceil) \rfloor$ is correct for all $x \in \mathbb{R}$.
+  \end{proof}
+  
+  \item Solve the recurrence
+  \begin{displaymath}
+  X_n = \left\{
+  \begin{aligned}
+  & n & \quad \quad (0 \leq n < m) \\
+  & X_{n-m} + 1 & \quad \quad (n \geq m)
+  \end{aligned}
+  \right.
+  \end{displaymath}
+  \begin{conclusion} $X_n = \lfloor n/m \rfloor + (n \mod m)$
+  \end{conclusion}
+  \begin{proof}
+    We will prove the conclusion by induction.
+    \begin{itemize}
+    \item The conclusion is obviously true for $0 \leq n < m$.
+    \item Suppose the conclusion is true for $km \leq n < (k+1)m \ (k \geq 0)$, we will prove it is still true for $(k+1)m \leq n < (k+2)m$. According to the recurrence function, we can derive the following formula (Equation \eqref{eq7}) for all $n$ in range $[(k+1)m, (k+2)m)$.
+        \begin{equation}
+        \begin{aligned}
+        X_n &= X_{n-m} + 1\\
+            &= \left\lfloor \frac{n-m}{m} \right\rfloor + ((n-m) \mod m) + 1 & \quad \quad (\mathrm{According\ to\ the\ induction\ hypothesis}) \\
+            &= \left\lfloor \frac{n}{m} - 1 \right\rfloor + (n \mod m) + 1 & \quad \quad (\mathrm{According\ to\ the\ property\ of\ mod})\\
+            &= \left\lfloor \frac{n}{m} \right\rfloor - 1 + (n \mod m) + 1 & \quad \quad (\mathrm{According\ to\ the\ property\ of\ \lfloor\cdot\rfloor})\\
+            &= \left\lfloor \frac{n}{m} \right\rfloor + (n \mod m)
+        \end{aligned}
+        \label{eq7}
+        \end{equation}
+        Hence, we complete the proof process of induction step.
+    \end{itemize} 
+    Therefore, the conclusion is correct.
+  \end{proof}
+  
+  \item Prove the Dirichlet box principle: If $n$ objects are put into $m$ boxes, some box must contain $\geq \lceil n/m \rceil$ objects, and some box must contain $\leq \lfloor n/m \rfloor$.
+  \begin{proof}
+  We divide the principle into two parts and prove them respectively.
+  \begin{itemize}
+  \item \textbf{Part 1} (some box must contain $\geq \lceil n/m \rceil$ objects): If every box contain strictly less than $\lceil n/m \rceil$ objects, the number of objects is at most $m(\lceil n/m \rceil - 1)$. But we can derive $m(\lceil n/m \rceil - 1) < m \cdot (n/m) = n$, which contradicts the premise that there are $n$ objects. Thus, some box must contain no less than $\lceil n/m \rceil$ objects.
+  \item \textbf{Part 2} (some box must contain $\leq \lfloor n/m \rfloor$ objects): If every box contain strictly more than $\lfloor n/m \rfloor$ objects, the number of objects is at least $m(\lfloor n/m \rfloor + 1)$. But we can derive $m(\lfloor n/m \rfloor + 1) > m \cdot (n/m) = n$, which contradicts the premise that there are $n$ objects. Thus, some box must contain no more than $\lfloor n/m \rfloor$ objects.
+  \end{itemize}
+  Therefore, we complete the proof of the Dirichlet box principle.
+  \end{proof}
+  
+  \item Egyptian mathematicians in 1800 B.C. represented rational numbers between 0 and 1 as sums of unit fractions $1/x_1 + \cdots + 1/x_k$, where the $x$'s were distinct positive integers. For example, they wrote $\frac{1}{3} + \frac{1}{15}$ instead of $\frac{2}{5}$. Prove that it is always possible to do this in a systematic way: if $0 \leq m/n \leq 1$, then
+      \begin{displaymath}
+      \frac{m}{n} = \frac{1}{q} + \left\{ \mathrm{representation\ of\ } \left( \frac{m}{n} - \frac{1}{q} \right) \right\}, \quad \quad q = \left\lceil \frac{n}{m} \right\rceil
+      \end{displaymath}
+      (This is Fibonacci's algorithm, due to Leonardo Fibonacci, A.D. 1202.)
+  \begin{proof} The process is obviously correct, what we have to prove is that the process will terminates in finite steps. Notice that
+  \begin{displaymath}
+  \frac{m}{n} - \frac{1}{q} = \frac{mq - n}{nq} = \frac{m\cdot \lceil \frac{n}{m} \rceil - n}{n \lceil \frac{n}{m} \rceil} = \frac{n \mathrm{\ mumble\ } m}{n \lceil \frac{n}{m} \rceil}
+  \end{displaymath}
+  where, $n \mathrm{\ mumble\ } m$ is a simplified notation of $(m\cdot \lceil \frac{n}{m} \rceil - n)$, which appears in the textbook.
+  
+  Consider about the numerator of the result, we know that $0 \leq n \mathrm{\ mumble\ } m < m$. So the numerator of the rest number will strictly decrease after each step. At first the numerator of the $\frac{m}{n}$ is $m$, so the process will take at most $m$ steps since the strictly-decreasing property of the numerator. Thus, the process will end in finite steps. So it is always possible to do the process in the systematic way above.
+  \end{proof}
+\end{enumerate}
+
+\section{Exercises of Chapter 4}
+\begin{enumerate}
+  \item What is the smallest positive integer that has exactly $k$ divisors, for $1 \leq k \leq 6$?
+  \begin{solution} We can get the following answer after a few calculations.
+  \begin{itemize}
+  \item $1$ is the smallest positive integer that has exactly $1$ divisors ($1$ itself).
+  \item $2$ is the smallest positive integer that has exactly $2$ divisors ($1, 2$).
+  \item $4$ is the smallest positive integer that has exactly $3$ divisors ($1,2,4$).
+  \item $6$ is the smallest positive integer that has exactly $4$ divisors ($1,2,3,6$).
+  \item $16$ is the smallest positive integer that has exactly $5$ divisors ($1,2,4,8,16$).
+  \item $12$ is the smallest positive integer that has exactly $6$ divisors ($1,2,3,4,6,12$).
+  \end{itemize}
+  \end{solution}
+  
+  \item Prove that $\gcd(m,n)\cdot \mathrm{lcm}(m,n) = m\cdot n$, and use this identity to express $\mathrm{lcm}(m,n)$ in terms of $\mathrm{lcm}(n\mod m,m)$, when $n\mod m\ne 0$. Hint: Use (4.12), (4.14) and (4.15).
+  \begin{proof}
+  According to the Equation (4.14) and Equation (4.15) in textbook, we have the following properties.
+  \begin{displaymath}
+  \begin{aligned}
+  k_1 = \gcd(m, n) \quad & \Longleftrightarrow \quad \forall p, k_{1,p} = \min{(m_p, n_p)} \\
+  k_2 = \mathrm{lcm}(m, n) \quad & \Longleftrightarrow \quad \forall p, k_{2,p} = \max(m_p, n_p)
+  \end{aligned}
+  \label{eq42}
+  \end{displaymath}
+  Suppose $k_1 = \gcd(m,n)$, $k_2 = \mathrm{lcm}(m,n)$, then can get the array $k_{1,p}$ and $k_{2,p}$ using properties above. Therefore, define $k$ as $k_1 \cdot k_2 = \gcd(m,n)\cdot \mathrm{lcm}(m,n)$. According to Equation \eqref{eq42} and Equation (4.12) in textbook, we can derive the following result (Equation \eqref{eq42}).
+  \begin{equation}
+  k_p = \min(m_p, n_p) + \max(m_p, n_p) = m_p + n_p \quad \quad (\forall p)
+  \label{eq42}
+  \end{equation}
+  Using Equation (4.12) in the textbook again, we can derive that $k = mn$, that is, $\gcd(m,n)\cdot \mathrm{lcm}(m,n) = m\cdot n$.
+  \end{proof}
+  \begin{solution}
+  Now we can use this identity to express $\mathrm{lcm}(m,n)$ as follows (Equation \eqref{eq42.2}).
+  \begin{equation}
+  \begin{aligned}
+  \mathrm{lcm}(m,n) & = \frac{mn}{\gcd(m,n}) \\
+  & = \frac{mn}{\gcd(n\mod m, m)}\\
+  & = \frac{mn}{\frac{m\cdot (n \mod m)}{\mathrm{lcm}(n\mod m, m)}}\\ 
+  & = \mathrm{lcm}(n\mod m, m) \cdot \frac{n}{n \mod m}
+  \end{aligned}
+  \label{eq42.2}
+  \end{equation}
+  \end{solution}
+  
+  \item Let $\pi(x)$ be the number of primes not exceeding $x$. Prove or disprove:
+  \begin{displaymath}
+  \pi(x) - \pi(x-1) = [x \mathrm{\ is\ prime}]
+  \end{displaymath}
+  \begin{solution}
+  If $x \in \mathbb{Z}$, the formula is obviously true. If $x \notin \mathbb{Z}$, then whether $x$ is a prime or not is undefined because prime is defined on the set $\mathbb{Z}$. Thus, we must change the formula as follows (Equation \eqref{eq43}).
+  \begin{equation}
+  \pi(x) - \pi(x-1) = [\lfloor x\rfloor \mathrm{\ is\ prime}]
+  \label{eq43}
+  \end{equation}
+  It is easy to verify that Equation \eqref{eq43} is correct.
+  \end{solution}
+  
+  \item What would happen if the Stern-Brocot construction started with the five fractions $(\frac{0}{1}, \frac{1}{0}, \frac{0}{-1}, \frac{-1}{0}, \frac{0}{1})$ instead of with $(\frac{0}{1}, \frac{1}{0})$?
+  \begin{solution}
+  In brief, we can get $4$ different Stern-Brocot tree between each consecutive pair of the five fractions $(\frac{0}{1}, \frac{1}{0}, \frac{0}{-1}, \frac{-1}{0}, \frac{0}{1})$. From left to right we can get the normal Stern-Brocot tree, the Stern-Brocot tree with denominators negated, the Stern-Brocot tree with both denominators and numerators negated and the Stern-Brocot tree with numerators negated. What's more, the properties of Stern-Brocot tree, such as every fraction $\frac{m}{n}$ satisfying $\gcd(n,m)=1$ and every consecutive fractions in the same stage $\frac{m}{n}, \frac{m'}{n'}$ satisfying $m'n - mn' = 1$, still hold.
+  \end{solution}
+  
+  \item Find simple formulas for $L^k$ and $R^k$, when $L$ and $R$ are $2\times2$ matrices of (4.33) in textbook.
+  \begin{conclusion} The simple formulas for $L^k$ and $R^k$ are as follows (Equation \eqref{eq45}).
+  \begin{equation}
+  L^k = \left( 
+  \begin{array}{cc}
+    1 & k \\
+    0 & 1 \\
+  \end{array}
+  \right), \quad R^k = \left(
+  \begin{array}{cc}
+    1 & 0 \\
+    k & 1 \\
+  \end{array}
+  \right)            
+  \label{eq45}
+  \end{equation}
+  \end{conclusion}
+  \begin{proof}
+  We will prove the formula of $L^k$, and the proof process of the formula of $R^k$ is similar to the proof process of the formula of $L^k$. We prove the formula of $L^k$ by induction to $k$.
+  \begin{itemize}
+  \item When $k=0$, $L^0 = I$, where $I$ is the identity matrix. The conclusion is obviously correct.
+  \item Suppose the conclusion is correct for $k\ (k \geq 0)$, and we are going to prove that it is still correct for $(k+1)$. We can derive the following equation (Equation \eqref{eq45.2}
+  \begin{equation}
+  L^{k+1} = L^k \cdot L  = \left(
+  \begin{array}{cc}
+    1 & k \\
+    0 & 1 \\
+  \end{array} \right) \cdot \left(
+  \begin{array}{cc}
+    1 & 1 \\
+    0 & 1 \\
+  \end{array} \right)=
+  \left(
+  \begin{array}{cc}
+    1 & k+1 \\
+    0 & 1 \\
+  \end{array} \right)
+  \label{eq45.2}
+  \end{equation}
+  Equation \eqref{eq45.2} shows that the conclusion is correct for $(k+1)$, which completes the induction step.
+  \end{itemize}
+  In summary, the conclusion is correct.
+  \end{proof}
+  
+  \item What does $a \equiv b\ (\mathrm{mod\ } 0)$ mean?
+  \begin{solution}
+  It means $a = b$, since we have defined $a \mathrm{\ mod\ } 0 = a$ before.
+  \end{solution}
+\end{enumerate}
+%=================== =====================================================
+\end{document}

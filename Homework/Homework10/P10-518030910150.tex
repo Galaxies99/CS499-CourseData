@@ -1,0 +1,398 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{ctex}
+\usepackage{amsmath,amscd,amsbsy,amssymb,latexsym,url,bm,amsthm}
+\usepackage{epsfig,graphicx,subfigure}
+\usepackage{enumerate}
+\usepackage{wrapfig}
+\usepackage{mathrsfs,euscript}
+\usepackage[usenames]{xcolor}
+\usepackage{hyperref}
+\usepackage[vlined,ruled,linesnumbered]{algorithm2e}
+\hypersetup{colorlinks=true,linkcolor=black}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}
+\newtheorem*{observation}{Observation}
+\newtheorem*{solution}{Solution}
+\newtheorem*{conclusion}{Conclusion}
+\newtheorem{definition}{Definition}
+\theoremstyle{definition}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\postscript}[2]
+ {\setlength{\epsfxsize}{#2\hsize}
+  \centerline{\epsfbox{#1}}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+\makeatletter \renewenvironment{proof}[1][Proof] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+\makeatletter
+\renewenvironment{solution}[1][Solution] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+
+\begin{document}
+\noindent
+
+%========================================================================
+\noindent\framebox[\linewidth]{\shortstack[c]{
+\Large{\textbf{Homework 10}}\vspace{1mm}\\
+CS499-Mathematical Foundations of Computer Science, Jie Li, Spring 2020.}}
+\begin{center}
+\footnotesize{\color{blue}Name: ·½γό½ά (Hongjie Fang)  \quad Student ID: 518030910150 \quad Email: galaxies@sjtu.edu.cn}
+\end{center}
+\section{Basic Problems}
+\begin{enumerate}
+\item[12. ] How many ways are there to put the numbers $\{1,2,\cdots,2n\}$ into a $2 \times n$ array so that rows and columns are in increasing order from left to right and from top to bottom? For example, one solution when $n = 5$ is:
+    \begin{displaymath}
+    \begin{pmatrix}
+    1 & 2 & 4 & 5 & 8 \\
+    3 & 6 & 7 & 9 & 10
+    \end{pmatrix}
+    \end{displaymath}
+
+    \begin{solution} Here is an important observation.
+
+    \begin{center}
+    \begin{minipage}[t]{0.9\linewidth}
+    \begin{observation}
+    The number of elements in the first row is \underline{no less than} the number of elements in the second row for any elements set $\{1, 2, \cdots, k\}$, where $1 \leq k \leq 2n$.
+    \end{observation}
+    \begin{proof} \textbf{(Contradiction)} If the number of elements in the second row is more than the number of elements in the first row, then there must exist an element $p \in [1, k]$ in the second row without its corresponding first row element. Since all elements in $\{1, 2, \cdots, k\}$ are used, the corresponding first element of $p$ must be greater than $k$, which contradicts the increasing order of column. Hence, the observation is correct.
+    \end{proof}
+    \end{minipage}
+    \end{center}
+
+    The observation inspires us to make the following transformation. We give the element $i$ in the first row a weight $w_i = 1$, and give the element $j$ in the second row a weight $w_j = -1$. The observation tells us for any $k\ (1 \leq k \leq 2n)$, the summation of weight in elements $\{1,2,\cdots,k\}$ is always non-negative, that is,
+    \begin{displaymath}
+    \sum_{i=1}^k w_i \geq 0 \quad \quad (\forall k \in [1, 2n])
+    \end{displaymath}
+
+    What's more, since the number of elements in the first row is equal to the number of elements in the second row, the summation of weight should be $0$, that is,
+    \begin{displaymath}
+    \sum_{i=1}^{2n} w_i = 0
+    \end{displaymath}
+
+    We find out that the problem stated above is just \textit{the mountain ranges} problem in textbook. According to the textbook, the solution to the \textit{mountain ranges} problem of width $2n$ is $C_n$, where $C_n$ denotes the $n$-th element of \textit{the Catalan's Number}. Therefore, the solution to our problem is also $C_n$, that is, there are
+    \begin{displaymath}
+    C_n = \frac{1}{n+1}\binom{2n}{n}
+    \end{displaymath}
+    ways to put the numbers $\{1,2,\cdots,2n\}$ into a $2 \times n$ array so that rows and columns are in increasing order from left to right and from top to bottom.
+    \end{solution}
+\clearpage
+
+\item[14. ] Solve the recurrence
+    \begin{displaymath}
+    \begin{aligned}
+    & g_0 = 0, \qquad g_1 = 1, \\
+    & g_n = -2ng_{n-1} + \sum_k \binom{n}{k} g_k g_{n-k}, \quad \textrm{for } n > 1.
+    \end{aligned}
+    \end{displaymath}
+    by using an exponential generating function.
+
+    \begin{solution}
+    The exponential generating function $\hat{G}(z)$ of $\{g_n\}$ is as follows.
+    \begin{displaymath}
+    \hat{G}(z) = \sum_{n\ge 0} g_n \frac{z^n}{n!}
+    \end{displaymath}
+
+    Then, we can plug the recurrence into the exponential generating function to continue derivations.
+    \begin{displaymath}
+    \begin{aligned}
+    \hat{G}(z) &= \sum_{n\ge 0} g_n \frac{z^n}{n!} \\
+         &= 0 + z + \sum_{n \ge 2} \left(-2ng_{n-1} + \sum_k \binom{n}{k} g_k g_{n-k}\right) \cdot \frac{z^n}{n!}\\
+         &= z - 2 \sum_{n \ge 2} ng_{n-1} \cdot \frac{z^n}{n!} + \sum_{n \ge 2} \sum_k \binom{n}{k} g_k g_{n-k} \cdot \frac{z^n}{n!} \\
+         &= z - 2 \sum_{n \ge 2} g_{n-1} \cdot \frac{z \cdot z^{n-1}}{(n-1)!} + \sum_{n \ge 0} \sum_k \frac{n!}{(n-k)!k!} \cdot g_k g_{n-k} \cdot \frac{z^n}{n!} \\
+         &= z - 2z \sum_{n \ge 1} g_n \cdot \frac{z^n}{n!} + \sum_{n \ge 0} \sum_k \left(g_k \cdot \frac{z^k}{k!} \right)\cdot \left(g_{n-k} \cdot \frac{z^{n-k}}{(n-k)!}\right) \\
+         &= z - 2z \sum_{n \ge 0} g_n \cdot \frac{z^n}{n!} + \left(\sum_{n \ge 0} g_n \cdot \frac{z^n}{n!}\right) \cdot \left(\sum_{n \ge 0} g_n \cdot \frac{z^n}{n!}\right) \\
+         &= z - 2z \hat{G}(z) + \hat{G}^2(z)
+    \end{aligned}
+    \end{displaymath}
+
+    Solve the equation above and we can get the following result.
+    \begin{displaymath}
+    \hat{G}(z) = \frac{2z+1 \pm \sqrt{4z^2 + 1}}{2}
+    \end{displaymath}
+
+    Since $\hat{G}(0) = 0$, we must choose the minus sign. Therefore $\hat{G}(z)$ is as follows (Eqn. \eqref{eq1}).
+    \begin{equation}
+    \hat{G}(z) = \frac{2z+1 - \sqrt{4z^2 + 1}}{2}
+    \label{eq1}
+    \end{equation}
+
+    We can use \textit{the general binomial theorem} to simplify the equation as follows.
+    \begin{displaymath}
+    \begin{aligned}
+    \hat{G}(z) &= \frac{2z+1 - \sqrt{4z^2 + 1}}{2} \\
+         &= \frac{1}{2} \left(2z+1 - \sum_{n \ge 0} \binom{\frac{1}{2}}{n} \left(4z^2\right)^n\right)
+    \end{aligned}
+    \end{displaymath}
+
+    Now we want to determine the value of the general binomial coefficient $\binom{\frac{1}{2}}{n}$. According to the definition of general binomial coefficient, we can make the following derivations.
+    \begin{displaymath}
+    \binom{\frac{1}{2}}{n} = \frac{\left(\frac{1}{2}\right)^{\underline{n}}}{n!} = \frac{(-1)^{n-1} \cdot (2n-2)!}{2^n \cdot 2^{n-1} \cdot (n-1)! \cdot n!} = \frac{(-1)^{n-1} \cdot (2n-2)!}{2^{2n-1} \cdot (n-1)! \cdot n!}
+    \end{displaymath}
+
+    Use the result above then we can continue our derivations as follows.
+    \begin{displaymath}
+    \begin{aligned}
+    \hat{G}(z) &= \frac{1}{2} \left(2z+1 - \sum_{n \ge 0} \binom{\frac{1}{2}}{n} \left(4z^2\right)^n\right)\\
+         &= \frac{1}{2} \left(2z+1 - 1 - \sum_{n \ge 1} \frac{(-1)^{n-1} \cdot (2n-2)!}{2^{2n-1} \cdot (n-1)! \cdot n!} \cdot 4^n \cdot z^{2n} \right)\\
+         &= \frac{1}{2} \left(2z - 2\sum_{n \ge 1} \frac{(-1)^{n-1} \cdot (2n-2)!}{(n-1)! n!} z^{2n} \right)\\
+         &= z - \sum_{n \ge 1} \frac{(-1)^{n-1}}{n} \binom{2(n-1)}{(n-1)} z^{2n} \\
+         &= z + \sum_{n \ge 1} (-1)^n (2n)! C_{n-1} \cdot \frac{z^{2n}}{(2n)!}
+    \end{aligned}
+    \end{displaymath}
+    where $C_n$ is the $n$-th element of \textit{the Catalan's Number}.
+
+    Therefore, we can derive the closed form of $\{g_n\}$ as follows (Eqn. \eqref{eq2}).
+    \begin{equation}
+    \begin{aligned}
+    & g_0 = 0, \qquad g_1 = 1,\\
+    & g_{2n} = (-1)^n (2n)! C_{n-1} \quad \textrm{for } n > 0,\\
+    & g_{2n + 1} = 0, \quad \textrm{for } n > 0.
+    \end{aligned}
+    \label{eq2}
+    \end{equation}
+    \end{solution}
+\clearpage
+
+\item[15. ] \textit{The Bell number} $\omega_n$ is the number of ways to partition $n$ things into subsets. For example $\omega_3 = 5$ because we can partition $\{1,2,3\}$ in the following ways.
+    \begin{displaymath}
+    \{1,2,3\};\quad\{1,2\}\cup\{3\};\quad\{1,3\}\cup\{2\};\quad\{1\}\cup\{2,3\};\quad\{1\}\cup\{2\}\cup\{3\}.
+    \end{displaymath}
+    Prove that $\omega_{n+1} = \sum_k \binom{n}{k} \omega_{n-k}$, and use this recurrence to find a closed form for the exponential generating function $P(z) = \sum_{n \ge 0} \omega_n z^n/n!$.
+
+    \begin{solution}
+    Consider the first element in the $(n+1)$ elements, it must be in one of the subsets. So we can enumerate the size of the subset $(k+1)$ which contains the first element. Therefore, we need to find out the rest $k$ elements in this subset, and there are $\binom{n}{k}$ ways to find them in the rest $n$ elements. The rest of the problem is the same sub-problem containing $(n+1) - (k+1) = n-k$ elements, so there are $\omega_{n-k}$ ways to partition them. Therefore, we can derive the following recurrence (Eqn. \eqref{eq3}).
+    \begin{equation}
+    \omega_{n+1} = \sum_k \binom{n}{k} \omega_{n-k}
+    \label{eq3}
+    \end{equation}
+
+    And it's easy derive the initial value $\omega_0 = 1$.
+
+    Suppose the exponential generating function of \textit{the Bell number} is $P(z)$ as follows.
+    \begin{displaymath}
+    P(z) = \sum_{n \ge 0} \omega_n \cdot \frac{z^n}{n!}
+    \end{displaymath}
+
+    Then, we can plug the recurrence into the exponential generating function to continue derivations.
+    \begin{displaymath}
+    \begin{aligned}
+    P(z) &= \sum_{n \ge 0} \omega_n \cdot \frac{z^n}{n!}\\
+         &= 1 + \sum_{n \ge 0} \omega_{n+1} \cdot \frac{z^{n+1}}{(n+1)!}\\
+         &= 1 + \sum_{n \ge 0} \sum_k \binom{n}{k} \omega_{n-k} \cdot \frac{z^{n+1}}{(n+1)!} \\
+         &= 1 + \sum_{n \ge 0} \sum_k \frac{n!}{k!(n-k)!} \cdot \omega_{n-k} \cdot \frac{z \cdot z^n}{(n+1) \cdot n!} \\
+         &= 1 + \sum_{n \ge 0} \frac{z}{n+1} \sum_k \left(\omega_{n-k}\cdot\frac{z^{n-k}}{(n-k)!}\right) \cdot \left(1\cdot \frac{z^k}{k!}\right)\\
+         &= 1 + \int_{0}^{z} \left(\sum_{n \ge 0}\omega_n\cdot\frac{x^n}{n!}\right) \cdot \left(\sum_{n \ge 0}1\cdot \frac{x^n}{n!}\right) \cdot \mathrm{d} x \\
+         &= 1 + \int_{0}^{z} P(x)e^x \mathrm{d}x
+    \end{aligned}
+    \end{displaymath}
+
+    Take derivative of both sides of the result above, we can get the following equation (Eqn. \eqref{eq4}).
+    \begin{equation}
+    \frac{\mathrm{d} P(z)}{\mathrm{d} z} = P(z)e^z
+    \label{eq4}
+    \end{equation}
+
+    Solve the equation combining with the fact that $P(0) = 1$, and we can get the closed form of $P(z)$ as follows (Eqn. \eqref{eq5}).
+    \begin{equation}
+    P(z) = e^{e^z - 1}
+    \label{eq5}
+    \end{equation}
+    \end{solution}
+
+\clearpage
+\item[16. ] Two sequence $\{a_n\}$ and $\{b_n\}$ are related by the convolution formula.
+    \begin{displaymath}
+    b_n = \sum_{k_1+2k_2+\cdots+nk_n = n} \binom{a_1+k_1-1}{k_1}\binom{a_2+k_2-1}{k_2}\cdots\binom{a_n+k_n-1}{k_n}
+    \end{displaymath}
+    also $a_0 = 0$ and $b_0 = 1$. Prove that the corresponding generating functions satisfy
+    \begin{displaymath}
+    \ln{B(z)} = A(z) + \frac{1}{2} A(z^2) + \frac{1}{3} A(z^3) + \cdots
+    \end{displaymath}
+
+    \begin{proof}
+    We can make the following derivations of the generating function of $\{b_n\}$.
+    \begin{displaymath}
+    \begin{aligned}
+    B(z) &= \sum_n b_n z^n \\
+         &= \sum_n \left(\sum_{k_1 + 2k_2 + \cdots + nk_n = n} \binom{a_1+k_1-1}{k_1}\binom{a_2+k_2-1}{k_2}\cdots\binom{a_n+k_n-1}{k_n}\right) \cdot z^n \\
+         &= \sum_n \left(\sum_{k_1 + 2k_2 + \cdots = n} \prod_{i\ge 1} \binom{a_i+k_i-1}{k_i}\right) \cdot z^n \\
+         &= \sum_n \left(\sum_{k_1 + k_2 + \cdots = n} \prod_{i\ge 1} \binom{a_i+\frac{k_i}{i}-1}{\frac{k_i}{i}}[i \mid k_i]\right) \cdot z^n \\
+         &= \prod_{i \ge 1} \left(\sum_n \binom{a_i+\frac{n}{i}-1}{\frac{n}{i}}[i \mid n]\cdot z^n \right) \\
+         &= \prod_{i \ge 1} \left(\sum_n \binom{a_i+n-1}{n}\cdot z^{in} \right) \\
+         &= \prod_{i \ge 1} \frac{1}{(1-z^i)^{a_i}}
+    \end{aligned}
+    \end{displaymath}
+
+    Notice that in the last step, we use the formula in Table 335. Hence, we can take logarithm to both sides of the result above, and we can continue our derivations.
+    \begin{displaymath}
+    \begin{aligned}
+    \ln{B(z)} &= \ln{\prod_{i \ge 1} \frac{1}{(1-z^i)^{a_i}}} \\
+              &= \sum_{i \ge 1} a_i \cdot \ln{\frac{1}{1-z^i}} \\
+              &= \sum_{i \ge 0} a_i \cdot \sum_{n \ge 1} \frac{1}{n} z^{in} \\
+              &= \sum_{n \ge 1} \frac{1}{n} \sum_{i \ge 0} a_i \cdot \left(z^n\right)^i \\
+              &= \sum_{n \ge 1} \frac{1}{n} A(z^n) \\
+              &= A(z) + \frac{1}{2} A(z^2) + \frac{1}{3} A(z^3) + \cdots
+    \end{aligned}
+    \end{displaymath}
+    Notice here we also use the formula in Table 335. Therefore, the conclusion is correct.
+    \end{proof}
+
+\clearpage
+\item[17. ] Show that the exponential generating function $\hat{G}(z)$ of a sequence is related to the ordinary generating function $G(z)$ by the following formula if the integral exists.
+    \begin{displaymath}
+    \int_0^{+\infty} \hat{G}(zt)e^{-t}\mathrm{d}t = G(z)
+    \end{displaymath}
+
+    \begin{proof}
+    Plug the $\hat{G}(z)$ into the left side of the equation, and we can make the following derivations.
+    \begin{displaymath}
+    \begin{aligned}
+    \int_0^{+\infty} \hat{G}(zt)e^{-t}\mathrm{d}t &= \int_0^{+\infty} \left(e^{-t} \sum_n g_n \cdot \frac{(zt)^n}{n!}\right)\mathrm{d}t\\
+    &= \sum_n g_n z^n \cdot \frac{1}{n!} \left(\int_0^{+\infty} e^{-t} t^n \mathrm{d}t \right)\\
+    &= \sum_n g_n z^n \cdot \frac{1}{n!} \cdot n! \\
+    &= \sum_n g_n z^n \\
+    &= G(z)
+    \end{aligned}
+    \end{displaymath}
+
+    Notice here we use the premise to change the order of summation and integral, and we use the famous method \textit{integration by parts} to calculate the integral (actually, for a given $n$, we can use the method for $n$ times to get the result of the integral).
+
+    There is also another formula that goes in the other directions according to the textbook.
+    \begin{displaymath}
+    \hat{G}(z) = \frac{1}{2\pi} \int_{-\pi}^{+\pi} G(ze^{-i\theta})e^{e^{i\theta}}\mathrm{d}\theta
+    \end{displaymath}
+
+    The proof of this formula is more complicated, but it can be done using the similar method, except that we may need some extra knowledge to solve the integral.
+
+    \end{proof}
+\clearpage
+
+\item[18. ] Find the Dirichlet generating function for the sequences.
+    \begin{enumerate}[a. ]
+    \item $g_n = \sqrt{n}$;
+    \item $g_n = \ln{n}$;
+    \item $g_n = [n \textrm{ is squarefree}]$.
+    \end{enumerate}
+    Express your answers in terms of the zeta function.
+    \begin{solution} Here are the answers to the sub-questions.
+    \begin{enumerate}
+    \item The Dirichlet generating function $\tilde{G}(z)$ of $\{g_n\}$ is as follows (Eqn. \eqref{eq6}).
+    \begin{equation}
+    \tilde{G}(z) = \sum_n \frac{g_n}{n^z}
+                 = \sum_n \frac{\sqrt{n}}{n^z}
+                 = \sum_n \frac{1}{n^{z - \frac{1}{2}}}
+                 = \zeta\left(z - \frac{1}{2}\right)
+    \label{eq6}
+    \end{equation}
+    \item The Dirichlet generating function $\tilde{G}(z)$ of $\{g_n\}$ is as follows (Eqn. \eqref{eq7}).
+    \begin{equation}
+    \tilde{G}(z) = \sum_n \frac{g_n}{n^z}
+                 = \sum_n \frac{\ln{n}}{n^z}
+                 = - \sum_n \frac{- \ln{n}}{n^z}
+                 = - \frac{\mathrm{d}}{\mathrm{d}z} \sum_n \frac{1}{n^z}
+                 = - \zeta'(z)
+    \label{eq7}
+    \end{equation}
+    \item Using the conclusion of Exercise 4.13, we know that a number $n$ is squarefree if and only if $\mu(n) \ne 0$. Since the Mobius function $\mu(\cdot)$ only has three values, we can derive the following property.
+        \begin{displaymath}
+        [n\textrm{ is squarefree}] = |\mu(n)|
+        \end{displaymath}
+
+        Therefore, the Dirichlet generating function $\tilde{G}(z)$ of $\{g_n\}$ is as follows.
+        \begin{displaymath}
+        \tilde{G}(z) = \sum_n \frac{g_n}{n^z}
+                     = \sum_n \frac{[n\textrm{ is squarefree}]}{n^z}
+                     = \sum_n \frac{|\mu(n)|}{n^z}
+        \end{displaymath}
+
+        Using the property of Mobius function, we can continue derivations.
+        \begin{displaymath}
+        \begin{aligned}
+        \tilde{G}(z) &= \sum_n \frac{|\mu(n)|}{n^z}\\
+                     &= \prod_p \left(1 + \frac{1}{p^z}\right) \\
+                     &= \prod_p \frac{1 - p^{-2z}}{1 - p^{-z}} \\
+                     &= \frac{\zeta{(z)}}{\zeta{(2z)}}
+        \end{aligned}
+        \end{displaymath}
+
+        Notice that in the last step, we use the product representation of Riemann's zeta function $\zeta(\cdot)$. Hence, the Dirichlet generating function $\tilde{G}(z)$ of $\{g_n\}$ is as follows (Eqn. \eqref{eq8}).
+        \begin{equation}
+        \tilde{G}(z) = \frac{\zeta{(z)}}{\zeta{(2z)}}
+        \label{eq8}
+        \end{equation}
+    \end{enumerate}
+    \end{solution}
+\end{enumerate}
+
+\clearpage
+\section{Homework Exercises}
+\begin{enumerate}
+\item[24. ] \textbf{(Bonus Problem)} How many spanning trees are in an $n$-wheel (a graph with $n$ "outer" vertices in a cycle, each connected to a hub vertex), when $n \ge 3$?
+    \begin{solution}
+    Suppose the number of spanning trees that satisfies the requirement is $f_n$. Notice it's very similar to the spanning tree problem in the textbook, except now the outer vertices is in a circle. If we simply regard the line of vertices in the textbook as a cycle, we need to add a factor $\frac{n}{m}$, where $\frac{1}{m}$ is to eliminate the aliases caused by a ring, and $n$ represents that we can rotate the graph to form $n$ different methods. Therefore,
+    \begin{displaymath}
+    f_n = \sum_{m \ge 1} \frac{n}{m} \sum_{k_1 + k_2 + \cdots + k_m = n} k_1 k_2 \cdots k_m
+    \end{displaymath}
+
+    So we can derive the generating function $F(z)$ of $\{f_n\}$ as follows.
+    \begin{displaymath}
+    \begin{aligned}
+    F(z) &= \sum_n f_n \cdot z^n \\
+         &= \sum_n \left(\sum_{m \ge 1} \frac{n}{m} \sum_{k_1 + k_2 + \cdots + k_m = n} k_1 k_2 \cdots k_m\right)\cdot z^n \\
+         &= \sum_{m \ge 1} \frac{1}{m} \sum_n n \cdot \left(\sum_{k_1 + k_2 + \cdots + k_m = n} k_1 k_2 \cdots k_m\right) \cdot z^n
+    \end{aligned}
+    \end{displaymath}
+
+    Suppose the generating function of $\{0,1,2,\cdots\}$ is $G(z)$, namely $\frac{z}{(1-z)^2}$, then the previous formula is a convolution form, therefore we can continue our derivations as follows.
+    \begin{displaymath}
+    \begin{aligned}
+    F(z) &= \sum_{m \ge 1} \frac{1}{m} \sum_n n \left(\sum_{k_1 + k_2 + \cdots + k_m = n} k_1 k_2 \cdots k_m\right) \cdot z^n \\
+         &= \sum_{m \ge 1} \frac{1}{m} \sum_n n \cdot [t^n]G^m(t) \cdot z^n \\
+         &= \sum_{m \ge 1} \frac{1}{m} \cdot z \sum_n [t^n]G^m(t) \cdot nz^{n-1} \\
+         &= \sum_{m \ge 1} \frac{1}{m} \cdot z \cdot \frac{\mathrm{d}}{\mathrm{d}z}\sum_n [t^n]G^m(t) \cdot z^n \\
+         &= \sum_{m \ge 1} \frac{1}{m} \cdot z \cdot \frac{\mathrm{d} G^m(z)}{\mathrm{d}z} \\
+         &= \sum_{m \ge 1} \frac{1}{m} \cdot z \cdot \frac{mz^{m-1} \cdot (1-z)^{2m} + z^m \cdot 2m(1-z)^{2m-1}}{(1-z)^{4m}} \\
+         &= \sum_{m \ge 1} \frac{z^m \cdot (1 + z)}{(1-z)^{2m+1}} \\
+         &= \frac{1+z}{1-z} \sum_m G^m(z) \\
+         &= \frac{1+z}{1-z} \frac{G(z)}{1 - G(z)} \\
+         &= \frac{z^2 + z}{(1 - 3z + z^2)(1 - z)}
+    \end{aligned}
+    \end{displaymath}
+
+    Using partial fraction we can rewrite the generating function as follows.
+    \begin{displaymath}
+    \begin{aligned}
+    F(z) &= \frac{1}{1 - \frac{3 + \sqrt{5}}{2} z} + \frac{1}{1 - \frac{3 - \sqrt{5}}{2} z} - \frac{2}{1-z}\\
+         &= \sum_n \left(\frac{3 + \sqrt{5}}{2} z\right)^n + \sum_n \left(\frac{3 - \sqrt{5}}{2} z\right)^n + \sum_n 2z^n \\
+         &= \sum_n \left(\left(\frac{3 + \sqrt{5}}{2}\right)^n + \left(\frac{3 - \sqrt{5}}{2}\right)^n - 2 \right) z^n
+    \end{aligned}
+    \end{displaymath}
+
+    Therefore, the closed form of $f_n$ is as follows (Eqn. \eqref{eq9}).
+    \begin{equation}
+    f_n = \left(\frac{3 + \sqrt{5}}{2}\right)^n + \left(\frac{3 - \sqrt{5}}{2}\right)^n - 2
+    \label{eq9}
+    \end{equation}
+
+    Therefore, $f_n$ can also be represented as
+    \begin{displaymath}
+    f_n = F_{2n+1} + F_{2n-1} - 2
+    \end{displaymath}
+    where $F_i$ is the $i$-th Fibonacci Number.
+    \end{solution}
+\end{enumerate}
+%=================== =====================================================
+\end{document}
